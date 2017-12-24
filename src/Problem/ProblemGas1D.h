@@ -10,34 +10,34 @@ class ProblemGas1D :
 private:
 	double gamma;
 
-	//скорость звука на границе (left)-й и (right)-й ячеек
+	//СЃРєРѕСЂРѕСЃС‚СЊ Р·РІСѓРєР° РЅР° РіСЂР°РЅРёС†Рµ (left)-Р№ Рё (right)-Р№ СЏС‡РµРµРє
 	double c_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const;
 	double c_semisum(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const;
-	//скорость звука в i-й ячейке
+	//СЃРєРѕСЂРѕСЃС‚СЊ Р·РІСѓРєР° РІ i-Р№ СЏС‡РµР№РєРµ
 	double c(const vector<vector<double>>& sol) const;
 
-	//Энтальпия звука на границе (left)-й и (right)-й ячеек
+	//Р­РЅС‚Р°Р»СЊРїРёСЏ Р·РІСѓРєР° РЅР° РіСЂР°РЅРёС†Рµ (left)-Р№ Рё (right)-Р№ СЏС‡РµРµРє
 	double h_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const;
-	//Энтальпия звука на i-й ячейке
+	//Р­РЅС‚Р°Р»СЊРїРёСЏ Р·РІСѓРєР° РЅР° i-Р№ СЏС‡РµР№РєРµ
 	double h(const vector<vector<double>>& sol) const;
 
-	//скорость на границе ячеек
+	//СЃРєРѕСЂРѕСЃС‚СЊ РЅР° РіСЂР°РЅРёС†Рµ СЏС‡РµРµРє
 	vector<double> v_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const;
-	//скорость на i-й ячейке
+	//СЃРєРѕСЂРѕСЃС‚СЊ РЅР° i-Р№ СЏС‡РµР№РєРµ
 	vector<double> v(const vector<vector<double>>& sol) const;
 
-	//Квадрат скорости на границе (left)-й и (right)-й ячеек
+	//РљРІР°РґСЂР°С‚ СЃРєРѕСЂРѕСЃС‚Рё РЅР° РіСЂР°РЅРёС†Рµ (left)-Р№ Рё (right)-Р№ СЏС‡РµРµРє
 	double v2_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const;
-	//Квадрат скорости на i-й ячейке
+	//РљРІР°РґСЂР°С‚ СЃРєРѕСЂРѕСЃС‚Рё РЅР° i-Р№ СЏС‡РµР№РєРµ
 	double v2(const vector<vector<double>>& sol) const;
 
-	//Уточненная скорость звука на разрыве
+	//РЈС‚РѕС‡РЅРµРЅРЅР°СЏ СЃРєРѕСЂРѕСЃС‚СЊ Р·РІСѓРєР° РЅР° СЂР°Р·СЂС‹РІРµ
 	double d_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const;
    
 protected:
 
-	//ВИРТУАЛЬНАЯ ФУНКЦИЯ
-	//Вычисление конвективного потока по заданному вектору решения
+	//Р’РР РўРЈРђР›Р¬РќРђРЇ Р¤РЈРќРљР¦РРЇ
+	//Р’С‹С‡РёСЃР»РµРЅРёРµ РєРѕРЅРІРµРєС‚РёРІРЅРѕРіРѕ РїРѕС‚РѕРєР° РїРѕ Р·Р°РґР°РЅРЅРѕРјСѓ РІРµРєС‚РѕСЂСѓ СЂРµС€РµРЅРёСЏ
 	virtual void getFlux(const vector<double>& U, vector<double>& Flux) const;
 	virtual vector<double> getFlux(const vector<double>& U) const;
 
@@ -45,42 +45,42 @@ public:
 	ProblemGas1D(const BaseParams& prm, int order, double gam, vector<std::function<double(const double)>> initv);
 	~ProblemGas1D();
 
-	//ВИРТУАЛЬНАЯ ФУНКЦИЯ
-	//Предельное значение (sd = left/right) q-й компоненты решения,
-	//рассчитываемое по решению (U) и наклону (V)
+	//Р’РР РўРЈРђР›Р¬РќРђРЇ Р¤РЈРќРљР¦РРЇ
+	//РџСЂРµРґРµР»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ (sd = left/right) q-Р№ РєРѕРјРїРѕРЅРµРЅС‚С‹ СЂРµС€РµРЅРёСЏ,
+	//СЂР°СЃСЃС‡РёС‚С‹РІР°РµРјРѕРµ РїРѕ СЂРµС€РµРЅРёСЋ (U) Рё РЅР°РєР»РѕРЅСѓ (V)
 	virtual inline double side_val(const vector<vector<double>>& sol, var q, side sd) const;
 	virtual inline double val(const vector<vector<double>>& sol, var q) const;
 	virtual inline vector<double> gauss_val(const vector<vector<double>>& sol, double Lcoord) const;
 	
-	//Значения левых (LW) и правых (RW) собственных векторов на всей сетке 
-	//(на левых границах ячеек - между (i-1)-й и i-й ячейками
-	//имеющие номера, указанные в списке инициализации (по возрастанию)
-	//рассчитываются по решениям (UU) и наклонам (VV) на всей сетке
-	//(для метода КИР)
+	//Р—РЅР°С‡РµРЅРёСЏ Р»РµРІС‹С… (LW) Рё РїСЂР°РІС‹С… (RW) СЃРѕР±СЃС‚РІРµРЅРЅС‹С… РІРµРєС‚РѕСЂРѕРІ РЅР° РІСЃРµР№ СЃРµС‚РєРµ 
+	//(РЅР° Р»РµРІС‹С… РіСЂР°РЅРёС†Р°С… СЏС‡РµРµРє - РјРµР¶РґСѓ (i-1)-Р№ Рё i-Р№ СЏС‡РµР№РєР°РјРё
+	//РёРјРµСЋС‰РёРµ РЅРѕРјРµСЂР°, СѓРєР°Р·Р°РЅРЅС‹Рµ РІ СЃРїРёСЃРєРµ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё (РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ)
+	//СЂР°СЃСЃС‡РёС‚С‹РІР°СЋС‚СЃСЏ РїРѕ СЂРµС€РµРЅРёСЏРј (UU) Рё РЅР°РєР»РѕРЅР°Рј (VV) РЅР° РІСЃРµР№ СЃРµС‚РєРµ
+	//(РґР»СЏ РјРµС‚РѕРґР° РљРР )
 	void omega(const vector<vector<vector<double>>>& SOL, \
 		vector<vector<vector<double>>>& LW, \
 		vector<vector<vector<double>>>& RW, \
 		const initializer_list<int>& list) const;
-	// Матрицы собственных векторов на ячейке
+	// РњР°С‚СЂРёС†С‹ СЃРѕР±СЃС‚РІРµРЅРЅС‹С… РІРµРєС‚РѕСЂРѕРІ РЅР° СЏС‡РµР№РєРµ
 	void EigenMatricies(const vector<vector<double>>& sol, \
 		vector<vector<double>>& LL, \
 		vector<vector<double>>& RR) const;
 	
-	//Значения собственных чисел (LL) на всей сетке  
-	//имеющие номера, указанные в списке инициализации (по возрастанию)
-	//(на левых границах ячеек - между (i-1)-й и i-й ячейками
-	//рассчитываются по решениям (UU) и наклонам (VV) на всей сетке	
+	//Р—РЅР°С‡РµРЅРёСЏ СЃРѕР±СЃС‚РІРµРЅРЅС‹С… С‡РёСЃРµР» (LL) РЅР° РІСЃРµР№ СЃРµС‚РєРµ  
+	//РёРјРµСЋС‰РёРµ РЅРѕРјРµСЂР°, СѓРєР°Р·Р°РЅРЅС‹Рµ РІ СЃРїРёСЃРєРµ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё (РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ)
+	//(РЅР° Р»РµРІС‹С… РіСЂР°РЅРёС†Р°С… СЏС‡РµРµРє - РјРµР¶РґСѓ (i-1)-Р№ Рё i-Р№ СЏС‡РµР№РєР°РјРё
+	//СЂР°СЃСЃС‡РёС‚С‹РІР°СЋС‚СЃСЏ РїРѕ СЂРµС€РµРЅРёСЏРј (UU) Рё РЅР°РєР»РѕРЅР°Рј (VV) РЅР° РІСЃРµР№ СЃРµС‚РєРµ	
 	void lambda(const vector<vector<vector<double>>>& SOL, \
 		const SoundVelType soundveltype, \
 		vector<vector<double>>& LL, \
 		const initializer_list<int>& list) const;
 
-	//ВИРТУАЛЬНАЯ ФУНКЦИЯ
-	//Возвращает вектор конс. переменных в точке x, вычисляемый по заданным в объекте Param начальным условиям
+	//Р’РР РўРЈРђР›Р¬РќРђРЇ Р¤РЈРќРљР¦РРЇ
+	//Р’РѕР·РІСЂР°С‰Р°РµС‚ РІРµРєС‚РѕСЂ РєРѕРЅСЃ. РїРµСЂРµРјРµРЅРЅС‹С… РІ С‚РѕС‡РєРµ x, РІС‹С‡РёСЃР»СЏРµРјС‹Р№ РїРѕ Р·Р°РґР°РЅРЅС‹Рј РІ РѕР±СЉРµРєС‚Рµ Param РЅР°С‡Р°Р»СЊРЅС‹Рј СѓСЃР»РѕРІРёСЏРј
 	virtual vector<double> initial_var(const double x) const;
 
-	//ВИРТУАЛЬНАЯ ФУНКЦИЯ
-	//Печать в телефайл
+	//Р’РР РўРЈРђР›Р¬РќРђРЇ Р¤РЈРќРљР¦РРЇ
+	//РџРµС‡Р°С‚СЊ РІ С‚РµР»РµС„Р°Р№Р»
 	virtual void more_to_file(ostream& str, \
 		const vector<vector<vector<double>>>& SOL, int cell) const;
 };

@@ -1,23 +1,23 @@
 #include "FluxHLL.h"
 #include "Integrator.h"
 
-//КОНСТРУКТОР HLL
+//РљРћРќРЎРўР РЈРљРўРћР  HLL
 FluxHLL::FluxHLL(const BaseParams& prm, Problem& prb, SoundVelType soundvel) : Flux(prm, prb), SoundVel(soundvel)
 {
     int nx = ptrprm->nx;
 
-    //Заготовки под L
+    //Р—Р°РіРѕС‚РѕРІРєРё РїРѕРґ L
     L.resize(nx + 1);
     for (int row = 0; row < nx + 1; ++row)
     {
         L[row].resize(2);
     }
 
-    //Заготовки под необходимые (временные) векторы
+    //Р—Р°РіРѕС‚РѕРІРєРё РїРѕРґ РЅРµРѕР±С…РѕРґРёРјС‹Рµ (РІСЂРµРјРµРЅРЅС‹Рµ) РІРµРєС‚РѕСЂС‹
     LdU.resize(5), RdU.resize(5), hllL.resize(5), hllR.resize(5);
 }
 
-//ДЕСТРУКТОР HLL
+//Р”Р•РЎРўР РЈРљРўРћР  HLL
 FluxHLL::~FluxHLL()
 {};
 
@@ -29,32 +29,32 @@ void FluxHLL::step(const vector<vector<vector<double>>>& SOL, \
     double h = ptrprm->h;
 	int dim = ptrprb->dim;
 
-	//Находим конвективные потоки
+	//РќР°С…РѕРґРёРј РєРѕРЅРІРµРєС‚РёРІРЅС‹Рµ РїРѕС‚РѕРєРё
 	ptrprb->convFlux(SOL);
 
-    //Находим собственные числа
+    //РќР°С…РѕРґРёРј СЃРѕР±СЃС‚РІРµРЅРЅС‹Рµ С‡РёСЃР»Р°
 	ptrprb_toGas->lambda(SOL, SoundVel, L, { 0, dim - 1 });
 
-    //Основной цикл по ячейкам
+    //РћСЃРЅРѕРІРЅРѕР№ С†РёРєР» РїРѕ СЏС‡РµР№РєР°Рј
     for (int cell = 0; cell < nx; ++cell)
     {
-		//Установка ссылок на решения на трех ячейках	:
-		//  myu(), myv() - на своей ячейке
-		//  leftu(), leftv() - на соседней слева ячейке
-		//  rightu(), rightv() - на соседней справа ячейке 
-		//и на конв.потоки на трех ячейках:
-		//  myflux(), myfluxL(), myfluxR() - конв.потоки на своей ячейке (по центру, слева, справа)
-		//  rightfluxL(), leftfluxR() - конв.потоки на правой и левой соседних ячейках (слева, справа)
+		//РЈСЃС‚Р°РЅРѕРІРєР° СЃСЃС‹Р»РѕРє РЅР° СЂРµС€РµРЅРёСЏ РЅР° С‚СЂРµС… СЏС‡РµР№РєР°С…	:
+		//  myu(), myv() - РЅР° СЃРІРѕРµР№ СЏС‡РµР№РєРµ
+		//  leftu(), leftv() - РЅР° СЃРѕСЃРµРґРЅРµР№ СЃР»РµРІР° СЏС‡РµР№РєРµ
+		//  rightu(), rightv() - РЅР° СЃРѕСЃРµРґРЅРµР№ СЃРїСЂР°РІР° СЏС‡РµР№РєРµ 
+		//Рё РЅР° РєРѕРЅРІ.РїРѕС‚РѕРєРё РЅР° С‚СЂРµС… СЏС‡РµР№РєР°С…:
+		//  myflux(), myfluxL(), myfluxR() - РєРѕРЅРІ.РїРѕС‚РѕРєРё РЅР° СЃРІРѕРµР№ СЏС‡РµР№РєРµ (РїРѕ С†РµРЅС‚СЂСѓ, СЃР»РµРІР°, СЃРїСЂР°РІР°)
+		//  rightfluxL(), leftfluxR() - РєРѕРЅРІ.РїРѕС‚РѕРєРё РЅР° РїСЂР°РІРѕР№ Рё Р»РµРІРѕР№ СЃРѕСЃРµРґРЅРёС… СЏС‡РµР№РєР°С… (СЃР»РµРІР°, СЃРїСЂР°РІР°)
 		setlocsolflux(SOL, cell);
 
-        //Скачок значений решения на ячейках
+        //РЎРєР°С‡РѕРє Р·РЅР°С‡РµРЅРёР№ СЂРµС€РµРЅРёСЏ РЅР° СЏС‡РµР№РєР°С…
         for (size_t val = 0; val < 5; ++val)
         {
 			LdU[val] = side_val(mysol(), (var)val, side::left)       - side_val(leftsol(), (var)val, side::right);
 			RdU[val] = side_val(rightsol(), (var)val, side::left) - side_val(mysol(), (var)val, side::right);
         }
 		
-		//Проверка направлений переноса
+		//РџСЂРѕРІРµСЂРєР° РЅР°РїСЂР°РІР»РµРЅРёР№ РїРµСЂРµРЅРѕСЃР°
 		if (L[cell][0] > 0)
 			for (size_t val = 0; val < 5; ++val)
 				hllL[val] = leftfluxR()[val];
@@ -66,7 +66,7 @@ void FluxHLL::step(const vector<vector<vector<double>>>& SOL, \
 			for (size_t val = 0; val < 5; ++val)
 				hllL[val] = (L[cell][1] * leftfluxR()[val] - L[cell][0] * myfluxL()[val] + L[cell][1] * L[cell][0] * LdU[val]) / (L[cell][1] - L[cell][0]);
 
-		//Проверка направлений переноса
+		//РџСЂРѕРІРµСЂРєР° РЅР°РїСЂР°РІР»РµРЅРёР№ РїРµСЂРµРЅРѕСЃР°
 		if (L[cell+1][0] > 0)
 			for (size_t val = 0; val < 5; ++val)
 				hllR[val] = myfluxR()[val];
@@ -87,7 +87,7 @@ void FluxHLL::step(const vector<vector<vector<double>>>& SOL, \
 			vector<double> intFL1 = GP.integrate([&](double pts) {return flx(pts)*2.0; }, dim);
 			vector<double> intFL2 = GP.integrate([&](double pts) {return flx(pts)*6.0*pts; }, dim);
 
-			//Пересчитываем средние значения и потоки
+			//РџРµСЂРµСЃС‡РёС‚С‹РІР°РµРј СЃСЂРµРґРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ Рё РїРѕС‚РѕРєРё
 			for (size_t val = 0; val < 5; ++val)
 			{
 				DSOL[cell][0][val] = -(cft / h) * (hllR[val] - hllL[val]);

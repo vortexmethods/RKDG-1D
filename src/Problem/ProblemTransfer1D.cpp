@@ -21,7 +21,7 @@ void ProblemTransfer1D::getFlux(const vector<double>& U, vector<double>& Flux) c
 }
 
 
-//Значения всех переменных на левой и правой границах ячеек
+//Р—РЅР°С‡РµРЅРёСЏ РІСЃРµС… РїРµСЂРµРјРµРЅРЅС‹С… РЅР° Р»РµРІРѕР№ Рё РїСЂР°РІРѕР№ РіСЂР°РЅРёС†Р°С… СЏС‡РµРµРє
 inline double ProblemTransfer1D::side_val(const vector<vector<double>>& sol, var q, side sd) const
 {
 	double sgn = (sd == side::left) ? -1.0 : 1.0;
@@ -40,18 +40,18 @@ inline double ProblemTransfer1D::side_val(const vector<vector<double>>& sol, var
 
 
 
-//Начальные условия
+//РќР°С‡Р°Р»СЊРЅС‹Рµ СѓСЃР»РѕРІРёСЏ
 double ProblemTransfer1D::initial_var(const double x, const var q, const int cft) const
 {
 	const int add = cft*dim; //(cft == 0) ? 0 : dim;
 	double res = 0.0;
 
-	//Для удобства ссылки:
+	//Р”Р»СЏ СѓРґРѕР±СЃС‚РІР° СЃСЃС‹Р»РєРё:
 	// = ptrprm->basic.init;
 
 	switch (q)
 	{
-		//Условия для U задаем непосредственно
+		//РЈСЃР»РѕРІРёСЏ РґР»СЏ U Р·Р°РґР°РµРј РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ
 	case var::U:
 		res = (init[0 + add])(x);
 		break;

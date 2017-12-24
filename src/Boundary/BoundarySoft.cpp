@@ -1,11 +1,11 @@
 #include "BoundarySoft.h"
 
-//Конструктор периодических ГУ
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРµСЂРёРѕРґРёС‡РµСЃРєРёС… Р“РЈ
 BoundarySoft::BoundarySoft(const BaseParams& prm, const Problem& prb) : Boundary(prm, prb)
 {
 }
 
-//Деструктор периодических ГУ
+//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ РїРµСЂРёРѕРґРёС‡РµСЃРєРёС… Р“РЈ
 BoundarySoft::~BoundarySoft()
 {
 }

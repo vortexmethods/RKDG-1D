@@ -1,24 +1,24 @@
 #include "FluxLaxFriedrichs.h"
 #include "Integrator.h"
 
-//КОНСТРУКТОР Лакса-Фридрихса
+//РљРћРќРЎРўР РЈРљРўРћР  Р›Р°РєСЃР°-Р¤СЂРёРґСЂРёС…СЃР°
 FluxLaxFriedrichs::FluxLaxFriedrichs(const BaseParams& prm, Problem& prb, SoundVelType soundvel) : Flux(prm, prb), SoundVel(soundvel)
 {
     int nx = ptrprm->nx;
 	int dim = ptrprb->dim;
 
-    //Заготовки под L
+    //Р—Р°РіРѕС‚РѕРІРєРё РїРѕРґ L
     L.resize(nx + 1);
     for (int row = 0; row < nx + 1; ++row)
     {
         L[row].resize(2);
     }
 
-    //Заготовки под необходимые (временные) векторы
+    //Р—Р°РіРѕС‚РѕРІРєРё РїРѕРґ РЅРµРѕР±С…РѕРґРёРјС‹Рµ (РІСЂРµРјРµРЅРЅС‹Рµ) РІРµРєС‚РѕСЂС‹
     LdU.resize(dim), RdU.resize(dim), lfL.resize(dim), lfR.resize(dim);
 }
 
-//ДЕСТРУКТОР Лакса-Фридрихса
+//Р”Р•РЎРўР РЈРљРўРћР  Р›Р°РєСЃР°-Р¤СЂРёРґСЂРёС…СЃР°
 FluxLaxFriedrichs::~FluxLaxFriedrichs()
 {};
 
@@ -32,7 +32,7 @@ void FluxLaxFriedrichs::step(const vector<vector<vector<double>>>& SOL, \
 
 	ptrprb->convFlux(SOL);
 
-		//Находим собственные числа
+		//РќР°С…РѕРґРёРј СЃРѕР±СЃС‚РІРµРЅРЅС‹Рµ С‡РёСЃР»Р°
 	ptrprb_toGas->lambda(SOL, SoundVel, L, { 0, dim - 1 });
 
     //?????????????????????????????????????????????????????????????
@@ -41,19 +41,19 @@ void FluxLaxFriedrichs::step(const vector<vector<vector<double>>>& SOL, \
     //// Experiment
 	//double A = ptrprb_toMHD->CFLSpeedMax(SOL);
 
-    //Основной цикл по ячейкам
+    //РћСЃРЅРѕРІРЅРѕР№ С†РёРєР» РїРѕ СЏС‡РµР№РєР°Рј
     for (int cell = 0; cell < nx; ++cell)  
     {
-		//Установка ссылок на решения на трех ячейках	:
-		//  myu(), myv() - на своей ячейке
-		//  leftu(), leftv() - на соседней слева ячейке
-		//  rightu(), rightv() - на соседней справа ячейке 
-		//и на конв.потоки на трех ячейках:
-		//  myflux(), myfluxL(), myfluxR() - конв.потоки на своей ячейке (по центру, слева, справа)
-		//  rightfluxL(), leftfluxR() - конв.потоки на правой и левой соседних ячейках (слева, справа)
+		//РЈСЃС‚Р°РЅРѕРІРєР° СЃСЃС‹Р»РѕРє РЅР° СЂРµС€РµРЅРёСЏ РЅР° С‚СЂРµС… СЏС‡РµР№РєР°С…	:
+		//  myu(), myv() - РЅР° СЃРІРѕРµР№ СЏС‡РµР№РєРµ
+		//  leftu(), leftv() - РЅР° СЃРѕСЃРµРґРЅРµР№ СЃР»РµРІР° СЏС‡РµР№РєРµ
+		//  rightu(), rightv() - РЅР° СЃРѕСЃРµРґРЅРµР№ СЃРїСЂР°РІР° СЏС‡РµР№РєРµ 
+		//Рё РЅР° РєРѕРЅРІ.РїРѕС‚РѕРєРё РЅР° С‚СЂРµС… СЏС‡РµР№РєР°С…:
+		//  myflux(), myfluxL(), myfluxR() - РєРѕРЅРІ.РїРѕС‚РѕРєРё РЅР° СЃРІРѕРµР№ СЏС‡РµР№РєРµ (РїРѕ С†РµРЅС‚СЂСѓ, СЃР»РµРІР°, СЃРїСЂР°РІР°)
+		//  rightfluxL(), leftfluxR() - РєРѕРЅРІ.РїРѕС‚РѕРєРё РЅР° РїСЂР°РІРѕР№ Рё Р»РµРІРѕР№ СЃРѕСЃРµРґРЅРёС… СЏС‡РµР№РєР°С… (СЃР»РµРІР°, СЃРїСЂР°РІР°)
 		setlocsolflux(SOL, cell);
 
-        //Скачок значений решения на ячейках
+        //РЎРєР°С‡РѕРє Р·РЅР°С‡РµРЅРёР№ СЂРµС€РµРЅРёСЏ РЅР° СЏС‡РµР№РєР°С…
         for (size_t val = 0; val < dim; ++val)
         {
             LdU[val] = side_val(mysol(), (var)val, side::left) - side_val(leftsol(), (var)val, side::right);
@@ -74,7 +74,7 @@ void FluxLaxFriedrichs::step(const vector<vector<vector<double>>>& SOL, \
         vector<double> intFL1 = GP.integrate([&](double pts) {return flx(pts)*2.0; }, dim);
         vector<double> intFL2 = GP.integrate([&](double pts) {return flx(pts)*6.0*pts; }, dim);
 
-		//Пересчитываем средние значения и потоки
+		//РџРµСЂРµСЃС‡РёС‚С‹РІР°РµРј СЃСЂРµРґРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ Рё РїРѕС‚РѕРєРё
 		for (size_t val = 0; val < dim; ++val)
 		{
 			DSOL[cell][0][val] = -(cft / h) * (lfR[val] - lfL[val]);

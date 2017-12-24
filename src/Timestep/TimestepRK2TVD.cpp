@@ -20,7 +20,7 @@ TimestepRK2TVD::~TimestepRK2TVD()
 {
 }
 
-//Шаг расчета методом Рунге-Кутты 2-го порядка (схема TVD)
+//РЁР°Рі СЂР°СЃС‡РµС‚Р° РјРµС‚РѕРґРѕРј Р СѓРЅРіРµ-РљСѓС‚С‚С‹ 2-РіРѕ РїРѕСЂСЏРґРєР° (СЃС…РµРјР° TVD)
 void TimestepRK2TVD::runstep(const vector<vector<vector<double>>>& SOL, \
 	vector<vector<vector<double>>>& SOLnew, \
 	const double tau, Flux& method, Limiter& lim)

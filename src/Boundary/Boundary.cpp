@@ -1,18 +1,18 @@
 #include "Boundary.h"
 
-//Êîíñòðóêòîð ÃÓ
+//ÐšÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€ Ð“Ð£
 Boundary::Boundary(const BaseParams& prm, const Problem& prb)
 {
 	ptrprm = &prm;
 	ptrprb = &prb;
 }
 
-//Äåñòðóêòîð ÃÓ
+//Ð”ÐµÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€ Ð“Ð£
 Boundary::~Boundary()
 {
 }
 
-//Êîïèðîâàíèå ðåøåíèÿ (U, V, W) -> (copyU, copyV, copyW)
+//ÐšÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ñ€ÐµÑˆÐµÐ½Ð¸Ñ (U, V, W) -> (copyU, copyV, copyW)
 void Boundary::CopySol(const vector<vector<double>>& SOL, vector<vector<double>>& copySOL) const
 {
 	copySOL = SOL;	

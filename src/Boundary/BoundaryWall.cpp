@@ -1,11 +1,11 @@
 #include "BoundaryWall.h"
 
-//Конструктор ГУ твердой стенки
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р“РЈ С‚РІРµСЂРґРѕР№ СЃС‚РµРЅРєРё
 BoundaryWall::BoundaryWall(const BaseParams& prm, const Problem& prb) : Boundary(prm, prb)
 {
 }
 
-//Деструктор ГУ твердой стенки
+//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ Р“РЈ С‚РІРµСЂРґРѕР№ СЃС‚РµРЅРєРё
 BoundaryWall::~BoundaryWall()
 {
 }

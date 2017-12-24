@@ -79,7 +79,7 @@ vector<double> ProblemMHD1D::getFlux(const vector<double>& U) const
 }
 
 
-//Значения всех переменных на левой и правой границах ячеек
+//Р—РЅР°С‡РµРЅРёСЏ РІСЃРµС… РїРµСЂРµРјРµРЅРЅС‹С… РЅР° Р»РµРІРѕР№ Рё РїСЂР°РІРѕР№ РіСЂР°РЅРёС†Р°С… СЏС‡РµРµРє
 inline double ProblemMHD1D::side_val(const vector<vector<double>>& sol, var q, side sd) const
 {
 	double sgn = (sd == side::left) ? -1.0 : 1.0;
@@ -118,7 +118,7 @@ inline double ProblemMHD1D::side_val(const vector<vector<double>>& sol, var q, s
 	return res;
 }
 
-//Значения всех переменных на ячейке
+//Р—РЅР°С‡РµРЅРёСЏ РІСЃРµС… РїРµСЂРµРјРµРЅРЅС‹С… РЅР° СЏС‡РµР№РєРµ
 inline double ProblemMHD1D::val(const vector<vector<double>>& sol, var q) const
 {
 	double res = 0.0;
@@ -165,7 +165,7 @@ inline vector<double> ProblemMHD1D::gauss_val(const vector<vector<double>>& sol,
 }
 
 
-//скорость звука на границе (left)-й и (right)-й ячеек
+//СЃРєРѕСЂРѕСЃС‚СЊ Р·РІСѓРєР° РЅР° РіСЂР°РЅРёС†Рµ (left)-Р№ Рё (right)-Р№ СЏС‡РµРµРє
 double ProblemMHD1D::c_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const
 {
 	//return 0.5*(sqrt(ptrprm->gamma*side_val(UU[cell], VV[cell], var::p, side::left) / side_val(UU[cell], VV[cell], var::r, side::left)) + \
@@ -176,17 +176,17 @@ double ProblemMHD1D::c_av(const vector<vector<double>>& solleft, const vector<ve
 	//return 0.5*(sqrt(ptrprm->gamma * pl / rhol) + sqrt(ptrprm->gamma * pr / rhor));
 	//return sqrt(ptrprm->gamma * (pl + pr) / (rhol + rhor));        
 }     
-//скорость звука на ячейке
+//СЃРєРѕСЂРѕСЃС‚СЊ Р·РІСѓРєР° РЅР° СЏС‡РµР№РєРµ
 double ProblemMHD1D::c(const vector<vector<double>>& sol) const
 {
 	/*double hh = h(sol);
-	double vv2 = v2(sol);														   ЧТО ЗДЕСЬ ПРОИСХОДИТ?!?!
+	double vv2 = v2(sol);														   Р§РўРћ Р—Р”Р•РЎР¬ РџР РћРРЎРҐРћР”РРў?!?!
 	return sqrt((gamma - 1.0)*(hh - 0.5*vv2)); */     
 	return sqrt( (val(sol, var::p) * gamma) / val(sol, var::r) );
 }
 
 //?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
-//энтальния на границе (left)-й и (right)-й ячеек																				
+//СЌРЅС‚Р°Р»СЊРЅРёСЏ РЅР° РіСЂР°РЅРёС†Рµ (left)-Р№ Рё (right)-Р№ СЏС‡РµРµРє																				
 double ProblemMHD1D::h_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const
 {
 	double rleft = side_val(solleft, var::r, side::right);
@@ -201,13 +201,13 @@ double ProblemMHD1D::h_av(const vector<vector<double>>& solleft, const vector<ve
 	//return 0.5*((side_val(Uright, Vright, var::p, side::left) + side_val(Uright, Vright, var::e, side::left)) / side_val(Uright, Vright, var::r, side::left) +
 	//(side_val(Uleft, Vleft, var::p, side::right) + side_val(Uleft, Vleft, var::e, side::right)) / side_val(Uleft, Vleft, var::r, side::right));
 }		
-//энтальния на ячейке
+//СЌРЅС‚Р°Р»СЊРЅРёСЏ РЅР° СЏС‡РµР№РєРµ
 double ProblemMHD1D::h(const vector<vector<double>>& sol) const
 {
 	return (val(sol, var::p) + val(sol, var::e)) / val(sol, var::r);
 }
 
-//скорость на границе ячеек
+//СЃРєРѕСЂРѕСЃС‚СЊ РЅР° РіСЂР°РЅРёС†Рµ СЏС‡РµРµРє
 vector<double> ProblemMHD1D::v_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const
 {
 	double sqrtrleft = sqrt(side_val(solleft, var::r, side::right));
@@ -224,7 +224,7 @@ vector<double> ProblemMHD1D::v_av(const vector<vector<double>>& solleft, const v
 				//sqr(side_val(Uright, Vright, var::vy, side::left) + side_val(Uleft, Vleft, var::vy, side::right)) + \
 				//sqr(side_val(Uright, Vright, var::vz, side::left) + side_val(Uleft, Vleft, var::vz, side::right)));
 }
-//скорость на ячейке
+//СЃРєРѕСЂРѕСЃС‚СЊ РЅР° СЏС‡РµР№РєРµ
 vector<double> ProblemMHD1D::v(const vector<vector<double>>& sol) const
 {
 	double numx = val(sol, var::vx);
@@ -238,7 +238,7 @@ vector<double> ProblemMHD1D::v(const vector<vector<double>>& sol) const
 
 
 
-//квадрат скорости на границе (left)-й и (right)-й ячеек
+//РєРІР°РґСЂР°С‚ СЃРєРѕСЂРѕСЃС‚Рё РЅР° РіСЂР°РЅРёС†Рµ (left)-Р№ Рё (right)-Р№ СЏС‡РµРµРє
 double ProblemMHD1D::v2_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const
 {
 	/*
@@ -261,7 +261,7 @@ double ProblemMHD1D::v2_av(const vector<vector<double>>& solleft, const vector<v
 			//sqr(side_val(Uright, Vright, var::vy, side::left) + side_val(Uleft, Vleft, var::vy, side::right)) + \
 			//sqr(side_val(Uright, Vright, var::vz, side::left) + side_val(Uleft, Vleft, var::vz, side::right)));
 }
-//квадрат скорости на ячейке
+//РєРІР°РґСЂР°С‚ СЃРєРѕСЂРѕСЃС‚Рё РЅР° СЏС‡РµР№РєРµ
 double ProblemMHD1D::v2(const vector<vector<double>>& sol) const
 {
 	vector<double> vav = v(sol);
@@ -269,7 +269,7 @@ double ProblemMHD1D::v2(const vector<vector<double>>& sol) const
 
 }
 
-//Уточненная скорость звука на разрыве 
+//РЈС‚РѕС‡РЅРµРЅРЅР°СЏ СЃРєРѕСЂРѕСЃС‚СЊ Р·РІСѓРєР° РЅР° СЂР°Р·СЂС‹РІРµ 
 double ProblemMHD1D::d_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const
 {
 	double rleft = side_val(solleft, var::r, side::right);
@@ -289,39 +289,39 @@ double ProblemMHD1D::d_av(const vector<vector<double>>& solleft, const vector<ve
     return sqrt((sqrtrleft*c2left + sqrtrright*c2right) / (sqrtrleft + sqrtrright) + w*sqr(uright-uleft));
 }
 
-//напряжённости МП на границе ячеек
+//РЅР°РїСЂСЏР¶С‘РЅРЅРѕСЃС‚Рё РњРџ РЅР° РіСЂР°РЅРёС†Рµ СЏС‡РµРµРє
 vector<double> ProblemMHD1D::H_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const
 {
 	return{ Hx, 0.5*(side_val(solright, var::Hy, side::left) + side_val(solleft, var::Hy, side::right)), 0.5*(side_val(solright, var::Hz, side::left) + side_val(solleft, var::Hz, side::right)) };
 	
 }
-//напряжённости МП на ячейке
+//РЅР°РїСЂСЏР¶С‘РЅРЅРѕСЃС‚Рё РњРџ РЅР° СЏС‡РµР№РєРµ
 vector<double> ProblemMHD1D::H(const vector<vector<double>>& sol) const
 {
 	return{ Hx, val(sol, var::Hy), val(sol, var::Hz) };
 }
-//квадрат напряжённости МП на границе (left)-й и (right)-й ячеек
+//РєРІР°РґСЂР°С‚ РЅР°РїСЂСЏР¶С‘РЅРЅРѕСЃС‚Рё РњРџ РЅР° РіСЂР°РЅРёС†Рµ (left)-Р№ Рё (right)-Р№ СЏС‡РµРµРє
 double ProblemMHD1D::H2_av(const vector<vector<double>>& solleft, const vector<vector<double>>& solright) const
 {
 
 	vector<double> Hav = H_av(solleft, solright);
 	return Hav[0] * Hav[0] + Hav[1] * Hav[1] + Hav[2] * Hav[2];
 }
-//квадрат напряжённости МП на ячейке
+//РєРІР°РґСЂР°С‚ РЅР°РїСЂСЏР¶С‘РЅРЅРѕСЃС‚Рё РњРџ РЅР° СЏС‡РµР№РєРµ
 double ProblemMHD1D::H2(const vector<vector<double>>& sol) const
 {
 	vector<double> Hav = H(sol);
 	return Hav[0] * Hav[0] + Hav[1] * Hav[1] + Hav[2] * Hav[2];
 
 }
-// Полное давление
+// РџРѕР»РЅРѕРµ РґР°РІР»РµРЅРёРµ
 double ProblemMHD1D::PT(const vector<vector<double>>& sol) const
 {
 	return val(sol, var::p) + H2(sol) / 2;
 }
 
 
-// Некоторые коэффициенты для матриц
+// РќРµРєРѕС‚РѕСЂС‹Рµ РєРѕСЌС„С„РёС†РёРµРЅС‚С‹ РґР»СЏ РјР°С‚СЂРёС†
 double ProblemMHD1D::B2(const vector<vector<double>>& sol) const
 {
 	double a = val(sol, var::Hy) * val(sol, var::Hy) + val(sol, var::Hz) * val(sol, var::Hz);
@@ -364,9 +364,9 @@ double ProblemMHD1D::AlfaS(const vector<vector<double>>& sol) const
 		return (sqrt(cf*cf - cc*cc)) / (sqrt(cf*cf - cs*cs));
 }
 
-// Скорости распространения
+// РЎРєРѕСЂРѕСЃС‚Рё СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёСЏ
 
-// Наибольшая скорость распространения на временном уровне
+// РќР°РёР±РѕР»СЊС€Р°СЏ СЃРєРѕСЂРѕСЃС‚СЊ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёСЏ РЅР° РІСЂРµРјРµРЅРЅРѕРј СѓСЂРѕРІРЅРµ
 double ProblemMHD1D::CFLSpeedMax(const vector<vector<vector<double>>>& SOL) const
 {
 	double umax = 0.0;  // variable for the max value of normal speed v_x = u
@@ -376,7 +376,7 @@ double ProblemMHD1D::CFLSpeedMax(const vector<vector<vector<double>>>& SOL) cons
 	const int nx = ptrprm->nx;
 
 	// Searching for the corresponding max speeds in elements
-	for (int cell = 0; cell < nx; ++cell) // до nx+1???
+	for (int cell = 0; cell < nx; ++cell) // РґРѕ nx+1???
 	{
 		u = fabs(val(SOL[cell], var::vx));
 		A_f = fabs(Af(SOL[cell]));
@@ -388,12 +388,12 @@ double ProblemMHD1D::CFLSpeedMax(const vector<vector<vector<double>>>& SOL) cons
 	// Computation of the max velocity of discontinuities
 	return umax + AfMax;
 }
-// Альфвеновкая скорость
+// РђР»СЊС„РІРµРЅРѕРІРєР°СЏ СЃРєРѕСЂРѕСЃС‚СЊ
 double ProblemMHD1D::SpeedAlfven(const vector<vector<double>>& sol) const
 {
 	return fabs(Hx) / sqrt(val(sol, var::r));
 }
-// Быстрая магнитозвуковая скорость															
+// Р‘С‹СЃС‚СЂР°СЏ РјР°РіРЅРёС‚РѕР·РІСѓРєРѕРІР°СЏ СЃРєРѕСЂРѕСЃС‚СЊ															
 double ProblemMHD1D::Af(const vector<vector<double>>& sol) const
 {
 	double cc = c(sol)*c(sol);
@@ -403,7 +403,7 @@ double ProblemMHD1D::Af(const vector<vector<double>>& sol) const
 
 	return sqrt(0.5*cc + 0.5* HH / r + 0.5*sqrt((cc + HH / r) * (cc + HH / r) - 4 * cc * aa));
 }
-// Медленная магнитозвуковая скорость
+// РњРµРґР»РµРЅРЅР°СЏ РјР°РіРЅРёС‚РѕР·РІСѓРєРѕРІР°СЏ СЃРєРѕСЂРѕСЃС‚СЊ
 double ProblemMHD1D::As(const vector<vector<double>>& sol) const
 {
 	double cc = c(sol)*c(sol);
@@ -414,8 +414,8 @@ double ProblemMHD1D::As(const vector<vector<double>>& sol) const
 	return sqrt(0.5*cc + 0.5* HH / r - 0.5*sqrt((cc + HH / r) * (cc + HH / r) - 4 * cc * aa));
 }
 
-//Значения левых и правых собственных векторов на всей сетке
-////(на левых границах ячеек - между (i-1)-й и i-й ячейками)
+//Р—РЅР°С‡РµРЅРёСЏ Р»РµРІС‹С… Рё РїСЂР°РІС‹С… СЃРѕР±СЃС‚РІРµРЅРЅС‹С… РІРµРєС‚РѕСЂРѕРІ РЅР° РІСЃРµР№ СЃРµС‚РєРµ
+////(РЅР° Р»РµРІС‹С… РіСЂР°РЅРёС†Р°С… СЏС‡РµРµРє - РјРµР¶РґСѓ (i-1)-Р№ Рё i-Р№ СЏС‡РµР№РєР°РјРё)
 //void ProblemGas1D::omega(const vector<vector<vector<double>>>& SOL, \
 //	vector<vector<vector<double>>>& LW, \
 //	vector<vector<vector<double>>>& RW, \
@@ -423,7 +423,7 @@ double ProblemMHD1D::As(const vector<vector<double>>& sol) const
 //{
 //	int nx = ptrprm->nx;
 //
-//	//Для временного хранения собств. векторов
+//	//Р”Р»СЏ РІСЂРµРјРµРЅРЅРѕРіРѕ С…СЂР°РЅРµРЅРёСЏ СЃРѕР±СЃС‚РІ. РІРµРєС‚РѕСЂРѕРІ
 //	vector<double> rw, lw;
 //
 //	for (int cell = 0; cell < nx + 1; ++cell)
@@ -474,7 +474,7 @@ double ProblemMHD1D::As(const vector<vector<double>>& sol) const
 //		}
 //	}//for cell
 //}
-// Матрицы собственных векторов на ячейке.
+// РњР°С‚СЂРёС†С‹ СЃРѕР±СЃС‚РІРµРЅРЅС‹С… РІРµРєС‚РѕСЂРѕРІ РЅР° СЏС‡РµР№РєРµ.
 void ProblemMHD1D::EigenMatricies(const vector<vector<double>>& sol, \
 	vector<vector<double>>& LL, \
 	vector<vector<double>>& RR) const
@@ -514,14 +514,14 @@ void ProblemMHD1D::EigenMatricies(const vector<vector<double>>& sol, \
 }
 
 
-//Значения левых и правых собственных чисел на всей сетке 
-//(на левых границах ячеек - между (i-1)-й и i-й ячейками)
+//Р—РЅР°С‡РµРЅРёСЏ Р»РµРІС‹С… Рё РїСЂР°РІС‹С… СЃРѕР±СЃС‚РІРµРЅРЅС‹С… С‡РёСЃРµР» РЅР° РІСЃРµР№ СЃРµС‚РєРµ 
+//(РЅР° Р»РµРІС‹С… РіСЂР°РЅРёС†Р°С… СЏС‡РµРµРє - РјРµР¶РґСѓ (i-1)-Р№ Рё i-Р№ СЏС‡РµР№РєР°РјРё)
 void ProblemMHD1D::lambda(const vector<vector<vector<double>>>& SOL, \
 	const SoundVelType soundveltype, \
 	vector<vector<double>>& LL, \
 	const initializer_list<int>& list) const
 {
-	//Для временного хранения собств. чисел
+	//Р”Р»СЏ РІСЂРµРјРµРЅРЅРѕРіРѕ С…СЂР°РЅРµРЅРёСЏ СЃРѕР±СЃС‚РІ. С‡РёСЃРµР»
 	vector<double> lam;
 
 	const int nx = ptrprm->nx;
@@ -576,7 +576,7 @@ void ProblemMHD1D::lambda(const vector<vector<vector<double>>>& SOL, \
 }
 
 
-//Начальные условия
+//РќР°С‡Р°Р»СЊРЅС‹Рµ СѓСЃР»РѕРІРёСЏ
 vector<double> ProblemMHD1D::initial_var(const double x) const
 {	
 	double rh = init[0](x);

@@ -9,7 +9,7 @@ class TimestepRK3TVD :
 	public Timestep
 {
 protected:
-	//Векторы для хранения промежуточных значений:
+	//Р’РµРєС‚РѕСЂС‹ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РїСЂРѕРјРµР¶СѓС‚РѕС‡РЅС‹С… Р·РЅР°С‡РµРЅРёР№:
 	vector<vector<vector<double>>> SOLtemp1;
 	vector<vector<vector<double>>> SOLtemp2;
 

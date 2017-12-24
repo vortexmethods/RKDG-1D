@@ -13,7 +13,7 @@ public:
 	IndicatorNowhere(const BaseParams& prm, const Problem& prb);
 	~IndicatorNowhere();
 
-	//Вычисление индикаторной функции
+	//Р’С‹С‡РёСЃР»РµРЅРёРµ РёРЅРґРёРєР°С‚РѕСЂРЅРѕР№ С„СѓРЅРєС†РёРё
 	void calc_indicator(const vector<vector<vector<double>>>& SOL, \
 		vector<double>& Ind) const;
 };

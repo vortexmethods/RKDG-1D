@@ -1,6 +1,6 @@
 #include "defs.h"
 
-//Прибавление к одному тройному массиву другого тройного массива
+//РџСЂРёР±Р°РІР»РµРЅРёРµ Рє РѕРґРЅРѕРјСѓ С‚СЂРѕР№РЅРѕРјСѓ РјР°СЃСЃРёРІСѓ РґСЂСѓРіРѕРіРѕ С‚СЂРѕР№РЅРѕРіРѕ РјР°СЃСЃРёРІР°
 vector<vector<vector<double>>>& operator += (vector<vector<vector<double>>>& a, const vector<vector<vector<double>>>& b)
 {
 	size_t dimx = a.size();
@@ -16,7 +16,7 @@ vector<vector<vector<double>>>& operator += (vector<vector<vector<double>>>& a, 
 	return a;
 };
 
-//Прибавление к одному двумерному массиву другого двумерного массива
+//РџСЂРёР±Р°РІР»РµРЅРёРµ Рє РѕРґРЅРѕРјСѓ РґРІСѓРјРµСЂРЅРѕРјСѓ РјР°СЃСЃРёРІСѓ РґСЂСѓРіРѕРіРѕ РґРІСѓРјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР°
 vector<vector<double>>& operator += (vector<vector<double>>& a, const vector<vector<double>>& b)
 {
 	size_t dimx = a.size();
@@ -29,7 +29,7 @@ vector<vector<double>>& operator += (vector<vector<double>>& a, const vector<vec
     return a;
 };
 
-//Вычитание из одного двумерного массива другого двумерного массива
+//Р’С‹С‡РёС‚Р°РЅРёРµ РёР· РѕРґРЅРѕРіРѕ РґРІСѓРјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР° РґСЂСѓРіРѕРіРѕ РґРІСѓРјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР°
 vector<vector<double>>& operator -= (vector<vector<double>>& a, const vector<vector<double>>& b)
 {
 	size_t dimx = a.size();
@@ -42,7 +42,7 @@ vector<vector<double>>& operator -= (vector<vector<double>>& a, const vector<vec
 	return a;
 };
 
-//Домножение двумерного массива на число
+//Р”РѕРјРЅРѕР¶РµРЅРёРµ РґРІСѓРјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР° РЅР° С‡РёСЃР»Рѕ
 vector<vector<double>>& operator *= (vector<vector<double>>& a, const double b)
 {
 	size_t dimx = a.size();
@@ -54,7 +54,7 @@ vector<vector<double>>& operator *= (vector<vector<double>>& a, const double b)
     return a;
 };
 
-//Домножение трехмерного массива на число
+//Р”РѕРјРЅРѕР¶РµРЅРёРµ С‚СЂРµС…РјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР° РЅР° С‡РёСЃР»Рѕ
 vector<vector<vector<double>>>& operator *= (vector<vector<vector<double>>>& a, const double b)
 {
 	size_t dimx = a.size();
@@ -99,7 +99,7 @@ vector<vector<vector<double>>> operator * (const vector<vector<vector<double>>>&
 
 }
 
-//Домножение вектора на число
+//Р”РѕРјРЅРѕР¶РµРЅРёРµ РІРµРєС‚РѕСЂР° РЅР° С‡РёСЃР»Рѕ
 vector<double>& operator *= (vector<double>& a, const double b)
 {
 	size_t dimx = a.size();
@@ -150,7 +150,7 @@ vector<double> operator / (const vector<double>& a, const double b)
 };
 
 
-//Умножение матрицы на вектор
+//РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС†С‹ РЅР° РІРµРєС‚РѕСЂ
 void prodMatrVec(const vector<vector<double>>& A, \
     const vector<double>& b, \
     vector<double>& c)
@@ -164,7 +164,7 @@ void prodMatrVec(const vector<vector<double>>& A, \
     }
 }
 
-//Умножение матриц из собственных векторов и собств. чисел (для КИР)
+//РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС† РёР· СЃРѕР±СЃС‚РІРµРЅРЅС‹С… РІРµРєС‚РѕСЂРѕРІ Рё СЃРѕР±СЃС‚РІ. С‡РёСЃРµР» (РґР»СЏ РљРР )
 void prodWrAbsLWl(const vector<vector<double>>& Wr, \
     const vector<vector<double>>& Wl, \
     const vector<double>& L, \

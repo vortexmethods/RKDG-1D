@@ -1,15 +1,15 @@
 #include "IndicatorNowhere.h"
 
-//КОНСТРУКТОР индикатора "никогда"
+//РљРћРќРЎРўР РЈРљРўРћР  РёРЅРґРёРєР°С‚РѕСЂР° "РЅРёРєРѕРіРґР°"
 IndicatorNowhere::IndicatorNowhere(const BaseParams& prm, const Problem& prb) : Indicator(prm, prb)
 {
 }//IndicatorEverywhere::IndicatorNowhere
 
-//ДЕСТРУКТОР индикатора "никогда"
+//Р”Р•РЎРўР РЈРљРўРћР  РёРЅРґРёРєР°С‚РѕСЂР° "РЅРёРєРѕРіРґР°"
 IndicatorNowhere::~IndicatorNowhere()
 {};
 
-//Вычисление индикаторной функции
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РёРЅРґРёРєР°С‚РѕСЂРЅРѕР№ С„СѓРЅРєС†РёРё
 void IndicatorNowhere::calc_indicator(const vector<vector<vector<double>>>& SOL, \
 	vector<double>& Ind) const
 {

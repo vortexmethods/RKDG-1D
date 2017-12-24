@@ -9,69 +9,69 @@
 
 using namespace std;
 
-//Тип данных "рабочая переменная"
+//РўРёРї РґР°РЅРЅС‹С… "СЂР°Р±РѕС‡Р°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ"
 enum var { r = 0, U = 0, \
 	       rvx = 1, rvy = 2, rvz = 3, e = 4, \
 		   Hy = 5, Hz = 6, \
 		   vx = 101, vy = 102, vz = 103, p = 104 };
 
-//Способы вычисления скорости звука
+//РЎРїРѕСЃРѕР±С‹ РІС‹С‡РёСЃР»РµРЅРёСЏ СЃРєРѕСЂРѕСЃС‚Рё Р·РІСѓРєР°
 enum SoundVelType { RoeSoundVel = 0, EinfeldtSoundVel = 1, SemisumSoundVel = 2 };
 
 typedef struct
 {
-	double L;     // Длина области течения
-	double T;     // Расчетное время моделирования
+	double L;     // Р”Р»РёРЅР° РѕР±Р»Р°СЃС‚Рё С‚РµС‡РµРЅРёСЏ
+	double T;     // Р Р°СЃС‡РµС‚РЅРѕРµ РІСЂРµРјСЏ РјРѕРґРµР»РёСЂРѕРІР°РЅРёСЏ
 
-	int nx;       // Число шагов по пространству
-	double Co;    // Число Куранта
-	int deltacnt; // Шаг вывода в файл
+	int nx;       // Р§РёСЃР»Рѕ С€Р°РіРѕРІ РїРѕ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІСѓ
+	double Co;    // Р§РёСЃР»Рѕ РљСѓСЂР°РЅС‚Р°
+	int deltacnt; // РЁР°Рі РІС‹РІРѕРґР° РІ С„Р°Р№Р»
 
-	double h;     // Шаг по пространству
-	double tau;   // Шаг по времени
+	double h;     // РЁР°Рі РїРѕ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІСѓ
+	double tau;   // РЁР°Рі РїРѕ РІСЂРµРјРµРЅРё
 } BaseParams;
 
-//Тип данных "граничное значение"
+//РўРёРї РґР°РЅРЅС‹С… "РіСЂР°РЅРёС‡РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ"
 enum side { left, right };
 
-//Возведение числа в квадрат
+//Р’РѕР·РІРµРґРµРЅРёРµ С‡РёСЃР»Р° РІ РєРІР°РґСЂР°С‚
 inline double sqr(const double p) { return p*p; };
 
-//Прибавление к одному тройному массиву другого тройного массива
+//РџСЂРёР±Р°РІР»РµРЅРёРµ Рє РѕРґРЅРѕРјСѓ С‚СЂРѕР№РЅРѕРјСѓ РјР°СЃСЃРёРІСѓ РґСЂСѓРіРѕРіРѕ С‚СЂРѕР№РЅРѕРіРѕ РјР°СЃСЃРёРІР°
 vector<vector<vector<double>>>& operator += (vector<vector<vector<double>>>& a, const vector<vector<vector<double>>>& b);
 
-//Прибавление к одному двумерному массиву другого двумерного массива
+//РџСЂРёР±Р°РІР»РµРЅРёРµ Рє РѕРґРЅРѕРјСѓ РґРІСѓРјРµСЂРЅРѕРјСѓ РјР°СЃСЃРёРІСѓ РґСЂСѓРіРѕРіРѕ РґРІСѓРјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР°
 vector<vector<double>>& operator += (vector<vector<double>>& a, const vector<vector<double>>& b);
 
-//Вычитание из одного двумерного массива другого двумерного массива
+//Р’С‹С‡РёС‚Р°РЅРёРµ РёР· РѕРґРЅРѕРіРѕ РґРІСѓРјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР° РґСЂСѓРіРѕРіРѕ РґРІСѓРјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР°
 vector<vector<double>>& operator -= (vector<vector<double>>& a, const vector<vector<double>>& b);
 
-//Домножение трехмерного массива на число
+//Р”РѕРјРЅРѕР¶РµРЅРёРµ С‚СЂРµС…РјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР° РЅР° С‡РёСЃР»Рѕ
 vector<vector<vector<double>>>& operator *= (vector<vector<vector<double>>>& a, const double b);
 vector<vector<vector<double>>> operator * (const vector<vector<vector<double>>>& a, const double b);
 
-//Домножение двумерного массива на число
+//Р”РѕРјРЅРѕР¶РµРЅРёРµ РґРІСѓРјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР° РЅР° С‡РёСЃР»Рѕ
 vector<vector<double>>& operator *= (vector<vector<double>>& a, const double b);
 vector<vector<double>> operator * (const vector<vector<double>>& a, const double b);
 
-//Домножение вектора на число
+//Р”РѕРјРЅРѕР¶РµРЅРёРµ РІРµРєС‚РѕСЂР° РЅР° С‡РёСЃР»Рѕ
 vector<double>& operator *= (vector<double>& a, const double b);
 vector<double> operator * (const vector<double>& a, const double b);
 vector<double> operator / (const vector<double>& a, const double b);
 
-//Прибавление к одному вектору второго
+//РџСЂРёР±Р°РІР»РµРЅРёРµ Рє РѕРґРЅРѕРјСѓ РІРµРєС‚РѕСЂСѓ РІС‚РѕСЂРѕРіРѕ
 vector<double>& operator += (vector<double>& a, const vector<double>& b);
 
-//Вычитание из одного вектора второго
+//Р’С‹С‡РёС‚Р°РЅРёРµ РёР· РѕРґРЅРѕРіРѕ РІРµРєС‚РѕСЂР° РІС‚РѕСЂРѕРіРѕ
 vector<double>& operator -= (vector<double>& a, const vector<double>& b);
 
 
-//Умножение матрицы на вектор
+//РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС†С‹ РЅР° РІРµРєС‚РѕСЂ
 void prodMatrVec(const vector<vector<double>>& A, \
     const vector<double>& b, \
     vector<double>& c);
 
-//Умножение матриц из собственных векторов и собств. чисел (для КИР)
+//РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС† РёР· СЃРѕР±СЃС‚РІРµРЅРЅС‹С… РІРµРєС‚РѕСЂРѕРІ Рё СЃРѕР±СЃС‚РІ. С‡РёСЃРµР» (РґР»СЏ РљРР )
 void prodWrAbsLWl(const vector<vector<double>>& Wr, \
     const vector<vector<double>>& Wl, \
     const vector<double>& L, \

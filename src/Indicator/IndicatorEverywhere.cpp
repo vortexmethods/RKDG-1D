@@ -1,15 +1,15 @@
 #include "IndicatorEverywhere.h"
 
-//КОНСТРУКТОР индикатора "везде и всюду"
+//РљРћРќРЎРўР РЈРљРўРћР  РёРЅРґРёРєР°С‚РѕСЂР° "РІРµР·РґРµ Рё РІСЃСЋРґСѓ"
 IndicatorEverywhere::IndicatorEverywhere(const BaseParams& prm, const Problem& prb) : Indicator(prm, prb)
 {
 }//IndicatorEverywhere::IndicatorEverywhere
 
-//ДЕСТРУКТОР индикатора "везде и всюду"
+//Р”Р•РЎРўР РЈРљРўРћР  РёРЅРґРёРєР°С‚РѕСЂР° "РІРµР·РґРµ Рё РІСЃСЋРґСѓ"
 IndicatorEverywhere::~IndicatorEverywhere()
 {};
 
-//Вычисление индикаторной функции
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РёРЅРґРёРєР°С‚РѕСЂРЅРѕР№ С„СѓРЅРєС†РёРё
 void IndicatorEverywhere::calc_indicator(const vector<vector<vector<double>>>& SOL, \
 	vector<double>& Ind) const
 {

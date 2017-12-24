@@ -18,7 +18,7 @@ Params::Params(const CaseName SovingCase)
 		L = 1.0;
         T = 0.2;
 
-        nx = 200;
+        nx = 100;
 		Co = 0.1;
 		deltacnt = 1;
 		SetBasicParams(L, T, nx, Co, deltacnt);		//Обязательная команда
@@ -34,16 +34,24 @@ Params::Params(const CaseName SovingCase)
 		
 		//Задание решаемой задачи, ГУ, индикатора, лимитера, схемы интегрирования, потока
 		//Тип - в угловых скобках, параметры (произвольное число, понятное конструктору) - в круглых
-        nshape = 3;
+        nshape = 2;
 		SetProblem<Gas1D>(nshape, gamma, initv);
 		SetBoundaryCondition<Wall>();
-		//SetFlux<HLLC>(RoeSoundVel);
-        SetFlux<LaxFriedrichs>(RoeSoundVel);
+        SetFlux<HLLC>(RoeSoundVel);
+//        SetFlux<LaxFriedrichs>(RoeSoundVel);
 		//SetFlux<KIR>();
-		SetIndicator<Krivodonova>(var::r);
-        //SetIndicator<Harten>(var::r, 2.0);
+        SetIndicator<Krivodonova>(var::r);
+//        SetIndicator<Harten>(var::r, 2.0);
         //SetIndicator<Nowhere>();
-        SetLimiter<WENO>(2.0);            //Инициализируется после индикатора
+//        SetLimiter<HWENO>(2.0);            //Инициализируется после индикатора
+//        SetLimiter<HWENOAve>(2.0);            //Инициализируется после индикатора
+//        SetLimiter<HWENOAve_Char>(2.0);
+          SetLimiter<HWENO_SC_LIN_Char>(2.0);
+
+//        SetLimiter<WENO>(2.0);            //Инициализируется после индикатора
+//        SetLimiter<HWENO_SC_Char>(2.0);            //Инициализируется после индикатора
+//        SetLimiter<WENO_S>(2.0);
+
 		//SetLimiter<FinDiff>();
         SetTimestep<RK3TVD>();			  //Инициализируется после гран.условий
 	}
@@ -168,9 +176,9 @@ Params::Params(const CaseName SovingCase)
         L = 1.0;
         T = 0.012;
             
-        nx = 800;
-        Co = 0.0001;
-        deltacnt = 100;
+        nx = 100;
+        Co = 0.01;
+        deltacnt = 10;
         SetBasicParams(L, T, nx, Co, deltacnt); 		//Обязательная команда
             
         //Специфические параметры задачи
@@ -192,7 +200,9 @@ Params::Params(const CaseName SovingCase)
 		SetIndicator<Krivodonova>(var::r);
 		//SetIndicator<Harten>(var::r, 2.0);
 		//SetIndicator<Everywhere>();
-		SetLimiter<WENO>(2.0);            //Инициализируется после индикатора
+//		SetLimiter<WENO>(2.0);            //Инициализируется после индикатора
+        SetLimiter<HWENO_SC>(2.0);            //Инициализируется после индикатора
+//        SetLimiter<WENO_S>(2.0);
 		//SetLimiter<FinDiff>();
 		SetTimestep<RK3TVD>();			  //Инициализируется после гран.условий
     }
@@ -265,7 +275,7 @@ Params::Params(const CaseName SovingCase)
             
         //Задание решаемой задачи, ГУ, индикатора, лимитера, схемы интегрирования, потока
         //Тип - в угловых скобках, параметры (произвольное число, понятное конструктору) - в круглых
-		nshape = 3;
+        nshape = 2;
 		SetProblem<Gas1D>(nshape, gamma, initv);
 		SetBoundaryCondition<Soft>();
 		SetFlux<HLLC>(RoeSoundVel);
@@ -274,8 +284,10 @@ Params::Params(const CaseName SovingCase)
 		SetIndicator<Krivodonova>(var::r);
 		//SetIndicator<Harten>(var::r, 2.0);
 		//SetIndicator<Nowhere>();
-		SetLimiter<HWENO_SC>(2.0);            //Инициализируется после индикатора
-		//SetLimiter<FinDiff>();
+//        SetLimiter<HWENO_SC>(2.0);            //Инициализируется после индикатора
+//        SetLimiter<WENO_S>(2.0);            //Инициализируется после индикатора
+        SetLimiter<WENO>(2.0);            //Инициализируется после индикатора
+//        SetLimiter<FinDiff>();
 		SetTimestep<RK3TVD>();			  //Инициализируется после гран.условий
     }
     break;
@@ -287,11 +299,11 @@ Params::Params(const CaseName SovingCase)
 		const double PI = 3.1415926535897932384626433832795;
 
 		L = 1.0;
-		T = 10.0;
+        T = 100.0;
 
-		nx = 10;
-		Co = 0.1;
-		deltacnt = 1;// nx * 10;
+        nx = 20;
+        Co = 0.1;
+        deltacnt = 10;// nx * 10;
 		SetBasicParams(L, T, nx, Co, deltacnt); 		//Обязательная команда
 
 		//Специфические параметры задачи
@@ -305,7 +317,7 @@ Params::Params(const CaseName SovingCase)
 		
 		//Задание решаемой задачи, ГУ, индикатора, лимитера, схемы интегрирования, потока
 		//Тип - в угловых скобках, параметры (произвольное число, понятное конструктору) - в круглых
-		nshape = 3;
+        nshape = 2;
 		SetProblem<Gas1D>(nshape, gamma, initv);
 		SetBoundaryCondition<Periodic>();
 		SetFlux<HLLC>(RoeSoundVel);

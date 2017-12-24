@@ -26,7 +26,7 @@ TimestepRK3TVD::~TimestepRK3TVD()
 {
 }
 
-//Шаг расчета методом Рунге-Кутты 3-го порядка (схема TVD)
+//РЁР°Рі СЂР°СЃС‡РµС‚Р° РјРµС‚РѕРґРѕРј Р СѓРЅРіРµ-РљСѓС‚С‚С‹ 3-РіРѕ РїРѕСЂСЏРґРєР° (СЃС…РµРјР° TVD)
 void TimestepRK3TVD::runstep(const vector<vector<vector<double>>>& SOL, \
 	vector<vector<vector<double>>>& SOLnew, \
 	const double tau, Flux& method, Limiter& lim)

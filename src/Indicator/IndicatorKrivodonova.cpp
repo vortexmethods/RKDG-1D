@@ -5,18 +5,18 @@
 #include "ProblemTransfer1D.h"
 #include "ProblemMHD1D.h"
 
-//КОНСТРУКТОР индикатора Криводоновой
+//РљРћРќРЎРўР РЈРљРўРћР  РёРЅРґРёРєР°С‚РѕСЂР° РљСЂРёРІРѕРґРѕРЅРѕРІРѕР№
 IndicatorKrivodonova::IndicatorKrivodonova(const BaseParams& prm, \
 	const Problem& prb, const var val) : Indicator(prm, prb)
 {    
 	sens = val;
 }//IndicatorKrivodonova::IndicatorKrivodonova
 
-//ДЕСТРУКТОР индикатора Криводоновой
+//Р”Р•РЎРўР РЈРљРўРћР  РёРЅРґРёРєР°С‚РѕСЂР° РљСЂРёРІРѕРґРѕРЅРѕРІРѕР№
 IndicatorKrivodonova::~IndicatorKrivodonova()
 {};
 
-//Вычисление индикаторной функции
+//Р’С‹С‡РёСЃР»РµРЅРёРµ РёРЅРґРёРєР°С‚РѕСЂРЅРѕР№ С„СѓРЅРєС†РёРё
 void IndicatorKrivodonova::calc_indicator(const vector<vector<vector<double>>>& SOL, \
 	vector<double>& Ind) const
 {
@@ -52,7 +52,7 @@ void IndicatorKrivodonova::calc_indicator(const vector<vector<vector<double>>>& 
 			double rmyr = ptrprb->side_val(SOL[cell], var::r, side::right);
 			double rrightl = ptrprb->side_val(SOL[cell + 1], var::r, side::left);
 			
-			//Взвешиваем скорости по Роу
+			//Р’Р·РІРµС€РёРІР°РµРј СЃРєРѕСЂРѕСЃС‚Рё РїРѕ Р РѕСѓ
 			if (sqrt(rmyl)*vmyl + sqrt(rleftr)*vleftr > 0)
 			{
 				/*double ll = ptrprb->side_val(SOL[cell], sens, side::left);
@@ -98,7 +98,7 @@ void IndicatorKrivodonova::calc_indicator(const vector<vector<vector<double>>>& 
 			double rmyr = ptrprb->side_val(SOL[cell], var::r, side::right);
 			double rrightl = ptrprb->side_val(SOL[cell + 1], var::r, side::left);
 
-			//Взвешиваем скорости по Роу
+			//Р’Р·РІРµС€РёРІР°РµРј СЃРєРѕСЂРѕСЃС‚Рё РїРѕ Р РѕСѓ
 			if (sqrt(rmyl)*vmyl + sqrt(rleftr)*vleftr > 0)
 			{
 				/*double ll = ptrprb->side_val(SOL[cell], sens, side::left);

@@ -1,6 +1,6 @@
 #include "Limiter.h"
 
-//ÊÎÍÑÒÐÓÊÒÎÐ Ëèìèòåðà
+//ÐšÐžÐÐ¡Ð¢Ð Ð£ÐšÐ¢ÐžÐ  Ð›Ð¸Ð¼Ð¸Ñ‚ÐµÑ€Ð°
 Limiter::Limiter(const BaseParams& prm, const Problem& prb, const Indicator& ind)
 {
 	ptrprm = &prm;
@@ -11,10 +11,10 @@ Limiter::Limiter(const BaseParams& prm, const Problem& prb, const Indicator& ind
 	int nx = ptrprm->nx;
 	
 	
-	//Âûäåëÿåì ïàìÿòü ïîä âñå íåîáõîäèìûå ïåðåìåííûå
+	//Ð’Ñ‹Ð´ÐµÐ»ÑÐµÐ¼ Ð¿Ð°Ð¼ÑÑ‚ÑŒ Ð¿Ð¾Ð´ Ð²ÑÐµ Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ñ‹Ðµ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ
     Ind.resize(nx);
 	
-    //Çàãîòîâêà äëÿ ðàáîòû ëèìèòåðà	
+    //Ð—Ð°Ð³Ð¾Ñ‚Ð¾Ð²ÐºÐ° Ð´Ð»Ñ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ð»Ð¸Ð¼Ð¸Ñ‚ÐµÑ€Ð°	
 	int nshape = ptrprb->nshape;
 
 	SOLcorr.resize(nx);
@@ -38,12 +38,12 @@ Limiter::~Limiter()
 void Limiter::Bound(vector<vector<vector<double>>>& SOL)
 {
 	int nshape = SOL[0].size();
-	//Êîððåêöèÿ íàêëîíîâ
+	//ÐšÐ¾Ñ€Ñ€ÐµÐºÑ†Ð¸Ñ Ð½Ð°ÐºÐ»Ð¾Ð½Ð¾Ð²
 	ptrInd->calc_indicator(SOL, Ind);
         
 	for (int cell = 0; cell < ptrprm->nx; ++cell)
 	{
-		//Ïðèçíàê âêëþ÷åíèÿ ëèìèòåðà
+		//ÐŸÑ€Ð¸Ð·Ð½Ð°Ðº Ð²ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ð»Ð¸Ð¼Ð¸Ñ‚ÐµÑ€Ð°
 		if (Ind[cell] > 1.0)
 		{
 			CalculateBound(SOL, cell);
@@ -54,7 +54,7 @@ void Limiter::Bound(vector<vector<vector<double>>>& SOL)
 
     for (int cell = 0; cell < ptrprm->nx; ++cell)
     {
-		//Ïðèçíàê âêëþ÷åíèÿ ëèìèòåðà
+		//ÐŸÑ€Ð¸Ð·Ð½Ð°Ðº Ð²ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ð»Ð¸Ð¼Ð¸Ñ‚ÐµÑ€Ð°
 		if (Ind[cell] > 1.0)
 			for (int i = 1; i < nshape; ++i)
 				SOL[cell][i] = SOLcorr[cell][i];				     

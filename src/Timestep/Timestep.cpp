@@ -1,6 +1,6 @@
 #include "Timestep.h"
 
-//Конструктор
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
 Timestep::Timestep(const BaseParams& prm, int dimension, int nshape, const Boundary& bnd)
 {
 	ptrprm = &prm;
@@ -21,7 +21,7 @@ Timestep::Timestep(const BaseParams& prm, int dimension, int nshape, const Bound
 	}	
 }
 
-//Деструктор
+//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 Timestep::~Timestep()
 {
 }

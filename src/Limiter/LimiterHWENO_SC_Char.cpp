@@ -2,32 +2,32 @@
 #include "Integrator.h"
 
 
-//КОНСТРУКТОР Лимитера HWENO_SC_Char
+//РљРћРќРЎРўР РЈРљРўРћР  Р›РёРјРёС‚РµСЂР° HWENO_SC_Char
 LimiterHWENO_SC_Char::LimiterHWENO_SC_Char(const BaseParams& prm, const Problem& prb, \
     const Indicator& ind, double degree) : Limiter(prm, prb, ind)
 {
 	wg = degree;
 }
 
-//ДЕСТРУКТОР Лимитера
+//Р”Р•РЎРўР РЈРљРўРћР  Р›РёРјРёС‚РµСЂР°
 LimiterHWENO_SC_Char::~LimiterHWENO_SC_Char()
 {}
 
 
 void LimiterHWENO_SC_Char::CalculateBound(const vector<vector<vector<double>>>& SOL, const int cell)
 {
-	// Некоторые базовые параметры.
+	// РќРµРєРѕС‚РѕСЂС‹Рµ Р±Р°Р·РѕРІС‹Рµ РїР°СЂР°РјРµС‚СЂС‹.
 	int nx = ptrprm->nx;
 	double h = ptrprm->h;
 	int dim = ptrprb->dim;
 	int nshape = ptrprb->nshape;
 
-	//Определяем соседей проблемной ячейки. При необходимости, посредством фиктивных ячеек.
+	//РћРїСЂРµРґРµР»СЏРµРј СЃРѕСЃРµРґРµР№ РїСЂРѕР±Р»РµРјРЅРѕР№ СЏС‡РµР№РєРё. РџСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё, РїРѕСЃСЂРµРґСЃС‚РІРѕРј С„РёРєС‚РёРІРЅС‹С… СЏС‡РµРµРє.
 	const vector<vector<double>>& leftSol = (cell > 0) ? SOL[cell - 1] : SOL[nx];
 	const vector<vector<double>>& troublSol = SOL[cell];
 	const vector<vector<double>>& rightSol = (cell < nx - 1) ? SOL[cell + 1] : SOL[nx + 1];
 
-	//Матрицы для собственных векторов.
+	//РњР°С‚СЂРёС†С‹ РґР»СЏ СЃРѕР±СЃС‚РІРµРЅРЅС‹С… РІРµРєС‚РѕСЂРѕРІ.
 	vector<vector<double>> LL; 
 	vector<vector<double>> RR;
 	LL.resize(dim);
@@ -38,17 +38,17 @@ void LimiterHWENO_SC_Char::CalculateBound(const vector<vector<vector<double>>>& 
 		RR[j].resize(dim);
 	}// for j
 
-	// Заполняем матрицы собственных векторов.
+	// Р—Р°РїРѕР»РЅСЏРµРј РјР°С‚СЂРёС†С‹ СЃРѕР±СЃС‚РІРµРЅРЅС‹С… РІРµРєС‚РѕСЂРѕРІ.
 	ptrprb->EigenMatricies(troublSol, LL, RR);
 
-	// Линейные веса.
+	// Р›РёРЅРµР№РЅС‹Рµ РІРµСЃР°.
 	double ak = 0.001;
 	double gamma0 = ak;
 	double gamma1 = 1.0 - 2.0*ak;
 	double gamma2 = ak;
 
 	
-	// Массив не- и лимитированных полиномов в характеристическом пространстве.
+	// РњР°СЃСЃРёРІ РЅРµ- Рё Р»РёРјРёС‚РёСЂРѕРІР°РЅРЅС‹С… РїРѕР»РёРЅРѕРјРѕРІ РІ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёС‡РµСЃРєРѕРј РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРµ.
 	vector<vector<vector<double>>> auxSOL;
 	vector<vector<double>> auxSOLcorr;
 	auxSOL.resize(3);
@@ -66,7 +66,7 @@ void LimiterHWENO_SC_Char::CalculateBound(const vector<vector<vector<double>>>& 
 		}// for j		
 	}// for i
 
-	// Подготовка к расчёту по методу HWENO_SC --- проекция решения на базис собственных векторов.
+	// РџРѕРґРіРѕС‚РѕРІРєР° Рє СЂР°СЃС‡С‘С‚Сѓ РїРѕ РјРµС‚РѕРґСѓ HWENO_SC --- РїСЂРѕРµРєС†РёСЏ СЂРµС€РµРЅРёСЏ РЅР° Р±Р°Р·РёСЃ СЃРѕР±СЃС‚РІРµРЅРЅС‹С… РІРµРєС‚РѕСЂРѕРІ.
 	for (int j = 0; j < nshape; ++j)
 	{
 		prodMatrVec(LL, leftSol[j],   auxSOL[0][j]);
@@ -75,10 +75,10 @@ void LimiterHWENO_SC_Char::CalculateBound(const vector<vector<vector<double>>>& 
 	}
 
 
-	// Цикл по консервативным переменным 
+	// Р¦РёРєР» РїРѕ РєРѕРЅСЃРµСЂРІР°С‚РёРІРЅС‹Рј РїРµСЂРµРјРµРЅРЅС‹Рј 
 	for (int val = 0; val < dim; ++val)
 	{
-		// Переобозначение моментов решения с ячеек шаблона.
+		// РџРµСЂРµРѕР±РѕР·РЅР°С‡РµРЅРёРµ РјРѕРјРµРЅС‚РѕРІ СЂРµС€РµРЅРёСЏ СЃ СЏС‡РµРµРє С€Р°Р±Р»РѕРЅР°.
 		const double& ul = auxSOL[0][0][val];
 		const double& u = auxSOL[1][0][val];
 		const double& ur = auxSOL[2][0][val];
@@ -86,9 +86,9 @@ void LimiterHWENO_SC_Char::CalculateBound(const vector<vector<vector<double>>>& 
 		const double& v = auxSOL[1][1][val];
 		const double& vr = auxSOL[2][1][val];
 		
-		// Создаём переменные, куда потом запишем всё необходимое. Формат вызван вилкой через if(nshape).
+		// РЎРѕР·РґР°С‘Рј РїРµСЂРµРјРµРЅРЅС‹Рµ, РєСѓРґР° РїРѕС‚РѕРј Р·Р°РїРёС€РµРј РІСЃС‘ РЅРµРѕР±С…РѕРґРёРјРѕРµ. Р¤РѕСЂРјР°С‚ РІС‹Р·РІР°РЅ РІРёР»РєРѕР№ С‡РµСЂРµР· if(nshape).
 		double beta0, beta1, beta2;
-		// Массив для боковых полиномов: интерполянов или просто модифицированных.
+		// РњР°СЃСЃРёРІ РґР»СЏ Р±РѕРєРѕРІС‹С… РїРѕР»РёРЅРѕРјРѕРІ: РёРЅС‚РµСЂРїРѕР»СЏРЅРѕРІ РёР»Рё РїСЂРѕСЃС‚Рѕ РјРѕРґРёС„РёС†РёСЂРѕРІР°РЅРЅС‹С….
 		vector<vector<double>> SIDE_auxSOL;
 		SIDE_auxSOL.resize(nshape);
 		for (int j = 0; j < nshape; ++j)
@@ -96,18 +96,18 @@ void LimiterHWENO_SC_Char::CalculateBound(const vector<vector<vector<double>>>& 
 
 		double p;
 		
-		// Дальше считаем по методике в зависимости от nshape.
+		// Р”Р°Р»СЊС€Рµ СЃС‡РёС‚Р°РµРј РїРѕ РјРµС‚РѕРґРёРєРµ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ nshape.
 		if (nshape == 2)
 		{
 			// Evaluating modified with LSM polynomials. Operating with slopes seems to be enough.
-			SIDE_auxSOL[1][0] = (2.0*vl / h + 12.0 * (u - ul) / h) / 13.0;
-			p = 2.0 *v / h;
-			SIDE_auxSOL[1][1] = (2.0*vr / h + 12.0 * (ur - u) / h) / 13.0;
+            SIDE_auxSOL[1][0] = (vl  + 6.0 * (u - ul) ) / 13.0;
+            p = v ;
+            SIDE_auxSOL[1][1] = (vr  + 6.0 * (ur - u) ) / 13.0;
 
 			// Calculating the smothness indicators for modified polynomials at the troubled cell. 
-			beta0 = SIDE_auxSOL[1][0]*SIDE_auxSOL[1][0] * h * h;
-			beta1 = p*p * h * h;
-			beta2 = SIDE_auxSOL[1][1]*SIDE_auxSOL[1][1] * h * h;
+            beta0 = SIDE_auxSOL[1][0]*SIDE_auxSOL[1][0] * 4.0;
+            beta1 = p*p * 4.0;
+            beta2 = SIDE_auxSOL[1][1]*SIDE_auxSOL[1][1] * 4.0;
 
 		}//if nshape
 		
@@ -118,7 +118,7 @@ void LimiterHWENO_SC_Char::CalculateBound(const vector<vector<vector<double>>>& 
 			const double& wr = auxSOL[2][2][val];
 
 
-			// Модифицированные полиномы соседних ячеек (по МНК)
+			// РњРѕРґРёС„РёС†РёСЂРѕРІР°РЅРЅС‹Рµ РїРѕР»РёРЅРѕРјС‹ СЃРѕСЃРµРґРЅРёС… СЏС‡РµРµРє (РїРѕ РњРќРљ)
 			SIDE_auxSOL[0][0] = (u + 192.0*ul - 2.0*(vl + 3.0*wl)) / 193.0;
 			SIDE_auxSOL[1][0] = (6.0*u - 6.0*ul + 181.0*vl - 36.0*wl) / 193.0;
 			SIDE_auxSOL[2][0] = (30.0*u - 30.0*ul - 60.0*vl + 13.0*wl) / 193.0;
@@ -128,31 +128,31 @@ void LimiterHWENO_SC_Char::CalculateBound(const vector<vector<vector<double>>>& 
 			SIDE_auxSOL[2][1] = (30.0*u - 30.0*ur + 60.0*vr + 13.0*wr) / 193.0;
 
 
-			// Вычисляем индикаторы гладкости полиномов решения в проблемной ячейке. 
+			// Р’С‹С‡РёСЃР»СЏРµРј РёРЅРґРёРєР°С‚РѕСЂС‹ РіР»Р°РґРєРѕСЃС‚Рё РїРѕР»РёРЅРѕРјРѕРІ СЂРµС€РµРЅРёСЏ РІ РїСЂРѕР±Р»РµРјРЅРѕР№ СЏС‡РµР№РєРµ. 
 			beta0 = 4.0 * ((SIDE_auxSOL[1][0] + 6.0 * SIDE_auxSOL[2][0])*(SIDE_auxSOL[1][0] + 6.0 * SIDE_auxSOL[2][0]) + 39.0 * SIDE_auxSOL[2][0]*SIDE_auxSOL[2][0]);
 			beta1 = 4.0 * (v*v + 39.0 * w*w);
 			beta2 = 4.0 * ((SIDE_auxSOL[1][1] - 6.0 * SIDE_auxSOL[2][1])*(SIDE_auxSOL[1][1] - 6.0 * SIDE_auxSOL[2][1]) + 39.0 * SIDE_auxSOL[2][1]*SIDE_auxSOL[2][1]);
 		}// if nshape
-		// Вычисляем нелинейные веса. Нормировка будет осуществлена ниже.
+		// Р’С‹С‡РёСЃР»СЏРµРј РЅРµР»РёРЅРµР№РЅС‹Рµ РІРµСЃР°. РќРѕСЂРјРёСЂРѕРІРєР° Р±СѓРґРµС‚ РѕСЃСѓС‰РµСЃС‚РІР»РµРЅР° РЅРёР¶Рµ.
 		double w0 = gamma0 / pow(weps + beta0, wg);
 		double w1 = gamma1 / pow(weps + beta1, wg);
 		double w2 = gamma2 / pow(weps + beta2, wg);
-		// Нормировка весов.
+		// РќРѕСЂРјРёСЂРѕРІРєР° РІРµСЃРѕРІ.
 		double WWW = (w0 + w1 + w2);
 		w0 = w0 / WWW; w1 = w1 / WWW; w2 = w2 / WWW;
 		
 		
-		// Честно сделанный пересчёт моментов с учётом привязки базисных функций к ячейкам. 
+		// Р§РµСЃС‚РЅРѕ СЃРґРµР»Р°РЅРЅС‹Р№ РїРµСЂРµСЃС‡С‘С‚ РјРѕРјРµРЅС‚РѕРІ СЃ СѓС‡С‘С‚РѕРј РїСЂРёРІСЏР·РєРё Р±Р°Р·РёСЃРЅС‹С… С„СѓРЅРєС†РёР№ Рє СЏС‡РµР№РєР°Рј. 
 
-		double t1, t2, t3,t4;
+        double t1, t2, t3,t4;
 		t1 = w0*SIDE_auxSOL[nshape-1][0];
 		t2 = w1*troublSol[nshape-1][val];
 		t3 = w2*SIDE_auxSOL[nshape-1][1];
 		t4 = t1 + t2 + t3;
 		//if (fabs(t4) < weps) t4 = 0;
 		auxSOLcorr[nshape-1][val] = t4;//(w0*leftSol[2][val] + w1*troublSol[2][val] + w2*rightSol[2][val]);
-		
-		if (nshape == 3)
+
+        if (nshape == 3)
 		{
 			t1 = w0*(SIDE_auxSOL[1][0] + 6.0 * SIDE_auxSOL[2][0]);
 			t2 = w1*troublSol[1][val];
@@ -164,7 +164,7 @@ void LimiterHWENO_SC_Char::CalculateBound(const vector<vector<vector<double>>>& 
 
 	}// for val
 
-	// Проектируем лимитированный полином обратно в пространство консервативных переменных.
+	// РџСЂРѕРµРєС‚РёСЂСѓРµРј Р»РёРјРёС‚РёСЂРѕРІР°РЅРЅС‹Р№ РїРѕР»РёРЅРѕРј РѕР±СЂР°С‚РЅРѕ РІ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РєРѕРЅСЃРµСЂРІР°С‚РёРІРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С….
 	for (int j = 1; j < nshape; ++j)
 		prodMatrVec(RR, auxSOLcorr[j], SOLcorr[cell][j]);
 }

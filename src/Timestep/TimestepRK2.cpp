@@ -9,7 +9,7 @@ TimestepRK2::~TimestepRK2()
 {
 }
 
-//Шаг расчета методом Рунге-Кутты 2-го порядка
+//РЁР°Рі СЂР°СЃС‡РµС‚Р° РјРµС‚РѕРґРѕРј Р СѓРЅРіРµ-РљСѓС‚С‚С‹ 2-РіРѕ РїРѕСЂСЏРґРєР°
 void TimestepRK2::runstep(const vector<vector<vector<double>>>& SOL, \
 	vector<vector<vector<double>>>& SOLnew, \
 	const double tau, Flux& method, Limiter& lim)

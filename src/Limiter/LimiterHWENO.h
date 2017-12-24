@@ -11,18 +11,26 @@
 using namespace std;
 
 class LimiterHWENO :
-    public Limiter
+	public Limiter
 {
 private:
-    double wg; //Степень, в которую возводятся слагаемые при расчете лимитированных наклонов
-    
-	const double weps = 1e-6; //Малое положительное число
+	double wg; //РЎС‚РµРїРµРЅСЊ, РІ РєРѕС‚РѕСЂСѓСЋ РІРѕР·РІРѕРґСЏС‚СЃСЏ СЃР»Р°РіР°РµРјС‹Рµ РїСЂРё СЂР°СЃС‡РµС‚Рµ Р»РёРјРёС‚РёСЂРѕРІР°РЅРЅС‹С… РјРѕРјРµРЅС‚РѕРІ
 
-	//РЕАЛИЗАЦИЯ ВИРТУАЛЬНОЙ ФУНКЦИИ 
-	//Собственно, расчет значений новых наклонов всех компонент решения
-	//заполнение значений новых наклонов (Vcorr[cell]) на конкретной (cell) ячейке сетки
-	//рассчитывается по решению (UU) и наклонам (VV) на всех ячейках сетки
-    void CalculateBound(const vector<vector<double>>& UU, const vector<vector<double>>& VV, const int cell);
+	const double weps = 1e-7; //РњР°Р»РѕРµ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРµ С‡РёСЃР»Рѕ
+
+							  //Р Р•РђР›РР—РђР¦РРЇ Р’РР РўРЈРђР›Р¬РќРћР™ Р¤РЈРќРљР¦РР 
+							  //РЎРѕР±СЃС‚РІРµРЅРЅРѕ, СЂР°СЃС‡РµС‚ Р·РЅР°С‡РµРЅРёР№ РЅРѕРІС‹С… РјРѕРјРµРЅС‚РѕРІ РІСЃРµС… РєРѕРјРїРѕРЅРµРЅС‚ СЂРµС€РµРЅРёСЏ
+	void CalculateBound(const vector<vector<vector<double>>>& SOL, const int cell);
+
+public:
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ (prm - РѕР±СЉРµРєС‚, СЃРѕРґРµСЂР¶Р°С‰РёР№ РїР°СЂР°РјРµС‚СЂС‹ Р·Р°РґР°С‡Рё, 
+	//dimension - С‡РёСЃР»Рѕ РєРѕРЅСЃРµСЂРІР°С‚РёРІРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С…,
+	//ind - РѕР±СЉРµРєС‚, Р·Р°РґР°СЋС‰РёР№ РёРЅРґРёРєР°С‚РѕСЂРЅСѓСЋ С„СѓРЅРєС†РёСЋ,
+	//degree - РїР°СЂР°РјРµС‚СЂ Р»РёРјРёС‚РµСЂР°, РїСЂРёСЃРІР°РµРјС‹Р№ РїРµСЂРµРјРµРЅРЅРѕР№ wg)
+	LimiterHWENO(const BaseParams& prm, const Problem& prb, Indicator& ind, double degree);
+
+	//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
+	~LimiterHWENO();
 
 	double centrdiff(double yL, double yR, double h)
 	{
@@ -43,21 +51,6 @@ private:
 	{
 		return 0.5 * (-3.0*y + 4.0*yR - yRR) / h;
 	}
-
-
-public:
-	//Конструктор (prm - объект, содержащий параметры задачи, 
-	//dimension - число консервативных переменных,
-	//ind - объект, задающий индикаторную функцию,
-	//degree - параметр лимитера, присваемый переменной wg)
-    //prb - указатель на задачу,
-    //LimiterHWENO(const BaseParams& prm, const int dimension, const Indicator& ind, double degree);
-    LimiterHWENO(const BaseParams& prm, const Problem& prb, \
-                 const Indicator& ind, double degree);
-
-	//Деструктор
-    ~LimiterHWENO();
 };
 
 #endif
-

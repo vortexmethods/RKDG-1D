@@ -3,7 +3,7 @@
 
 #include "defs.h"
 
-//Тип данных "имя задачи"
+//РўРёРї РґР°РЅРЅС‹С… "РёРјСЏ Р·Р°РґР°С‡Рё"
 enum CaseName { Sod,  BrioWu, Lax, Rarefaction, leftWoodward, rightWoodward, Shock, TestSmallTravelingWave, TestSmooth, \
 	LeftTriangle};
 
@@ -13,38 +13,41 @@ enum CaseName { Sod,  BrioWu, Lax, Rarefaction, leftWoodward, rightWoodward, Sho
 #include "BoundarySoft.h"
 
 #include "Indicator.h"
-#include "IndicatorKrivodonova.h"  //Индикатор Криводоновой
-//#include "IndicatorHarten.h"       //Индикатор Хартена
-#include "IndicatorEverywhere.h"   //Индикатор, который срабатывает всегда (автоматически вызывается в МКР)
-#include "IndicatorNowhere.h"      //Индикатор, который не срабатывает никогда
+#include "IndicatorKrivodonova.h"  //РРЅРґРёРєР°С‚РѕСЂ РљСЂРёРІРѕРґРѕРЅРѕРІРѕР№
+#include "IndicatorHarten.h"       //РРЅРґРёРєР°С‚РѕСЂ РҐР°СЂС‚РµРЅР°
+#include "IndicatorEverywhere.h"   //РРЅРґРёРєР°С‚РѕСЂ, РєРѕС‚РѕСЂС‹Р№ СЃСЂР°Р±Р°С‚С‹РІР°РµС‚ РІСЃРµРіРґР° (Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РІС‹Р·С‹РІР°РµС‚СЃСЏ РІ РњРљР )
+#include "IndicatorNowhere.h"      //РРЅРґРёРєР°С‚РѕСЂ, РєРѕС‚РѕСЂС‹Р№ РЅРµ СЃСЂР°Р±Р°С‚С‹РІР°РµС‚ РЅРёРєРѕРіРґР°
 
 #include "Limiter.h"
-#include "LimiterFinDiff.h"      //Метод конечных разностей
-#include "LimiterWENO.h"         //Лимитер WENO
-#include "LimiterWENO_S.h"         //Лимитер WENO_S
-#include "LimiterHWENO_SC.h"         //Лимитер HWENO_SC
-#include "LimiterHWENO_SC_Char.h"         //Лимитер HWENO_SC_Char
-#include "LimiterHWENO.h"         //Лимитер WENO
-//#include "LimiterWENOH.h"        //Лимитер WENOH
+#include "LimiterFinDiff.h"      //РњРµС‚РѕРґ РєРѕРЅРµС‡РЅС‹С… СЂР°Р·РЅРѕСЃС‚РµР№
+#include "LimiterWENO.h"         //Р›РёРјРёС‚РµСЂ WENO
+#include "LimiterWENO_S.h"         //Р›РёРјРёС‚РµСЂ WENO_S
+#include "LimiterHWENO_SC.h"         //Р›РёРјРёС‚РµСЂ HWENO_SC
+#include "LimiterHWENO_SC_Char.h"         //Р›РёРјРёС‚РµСЂ HWENO_SC_Char
+#include "LimiterHWENO.h"         //Р›РёРјРёС‚РµСЂ WENO
+#include "LimiterHWENOAve.h"         //Р›РёРјРёС‚РµСЂ WENO
+#include "LimiterHWENOAve_Char.h"
+#include "LimiterHWENO_SC_LIN_Char.h"
+//#include "LimiterWENOH.h"        //Р›РёРјРёС‚РµСЂ WENOH
 
 #include "Timestep.h"       
-#include "TimestepEuler.h"   //Явный метод Эйлера
-#include "TimestepRK2.h"     //Метод Рунге-Кутты 2-го порядка
-#include "TimestepRK2TVD.h"  //Метод Рунге-Кутты 2-го порядка (схема TVD)
-#include "TimestepRK3TVD.h"  //Метод Рунге-Кутты 3-го порядка (схема TVD)
+#include "TimestepEuler.h"   //РЇРІРЅС‹Р№ РјРµС‚РѕРґ Р­Р№Р»РµСЂР°
+#include "TimestepRK2.h"     //РњРµС‚РѕРґ Р СѓРЅРіРµ-РљСѓС‚С‚С‹ 2-РіРѕ РїРѕСЂСЏРґРєР°
+#include "TimestepRK2TVD.h"  //РњРµС‚РѕРґ Р СѓРЅРіРµ-РљСѓС‚С‚С‹ 2-РіРѕ РїРѕСЂСЏРґРєР° (СЃС…РµРјР° TVD)
+#include "TimestepRK3TVD.h"  //РњРµС‚РѕРґ Р СѓРЅРіРµ-РљСѓС‚С‚С‹ 3-РіРѕ РїРѕСЂСЏРґРєР° (СЃС…РµРјР° TVD)
 
 #include "Flux.h"            
-//#include "FluxKIR.h"          //Поток КИР
-#include "FluxHLL.h"          //Поток HLL   
-#include "FluxHLLC.h"         //Поток HLLC
+//#include "FluxKIR.h"          //РџРѕС‚РѕРє РљРР 
+#include "FluxHLL.h"          //РџРѕС‚РѕРє HLL   
+#include "FluxHLLC.h"         //РџРѕС‚РѕРє HLLC
 //#include "FluxHLLE.h"
-#include "FluxLaxFriedrichs.h"//Поток Лакса-Фридрихса
-#include "FluxGodunovType.h"  //Поток типа Годунова (phiGodunov, phiCentralDiff, phivanLeer)
+#include "FluxLaxFriedrichs.h"//РџРѕС‚РѕРє Р›Р°РєСЃР°-Р¤СЂРёРґСЂРёС…СЃР°
+#include "FluxGodunovType.h"  //РџРѕС‚РѕРє С‚РёРїР° Р“РѕРґСѓРЅРѕРІР° (phiGodunov, phiCentralDiff, phivanLeer)
 
-#include "Problem.h"           //Физическая постановка задачи
-#include "ProblemGas1D.h"      //Одномерная газовая динамика, ур-я Эйлера
-#include "ProblemMHD1D.h"      //Одномерная MГД
-#include "ProblemTransfer1D.h" //Одномерное уравнение переноса
+#include "Problem.h"           //Р¤РёР·РёС‡РµСЃРєР°СЏ РїРѕСЃС‚Р°РЅРѕРІРєР° Р·Р°РґР°С‡Рё
+#include "ProblemGas1D.h"      //РћРґРЅРѕРјРµСЂРЅР°СЏ РіР°Р·РѕРІР°СЏ РґРёРЅР°РјРёРєР°, СѓСЂ-СЏ Р­Р№Р»РµСЂР°
+#include "ProblemMHD1D.h"      //РћРґРЅРѕРјРµСЂРЅР°СЏ MР“Р”
+#include "ProblemTransfer1D.h" //РћРґРЅРѕРјРµСЂРЅРѕРµ СѓСЂР°РІРЅРµРЅРёРµ РїРµСЂРµРЅРѕСЃР°
 
 #include <vector>
 #include <functional>
@@ -52,25 +55,25 @@ enum CaseName { Sod,  BrioWu, Lax, Rarefaction, leftWoodward, rightWoodward, Sho
 
 using namespace std;
 
-//Макрос для инициализации начальных условий
-//(исключительно чтобы покороче писать)
+//РњР°РєСЂРѕСЃ РґР»СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё РЅР°С‡Р°Р»СЊРЅС‹С… СѓСЃР»РѕРІРёР№
+//(РёСЃРєР»СЋС‡РёС‚РµР»СЊРЅРѕ С‡С‚РѕР±С‹ РїРѕРєРѕСЂРѕС‡Рµ РїРёСЃР°С‚СЊ)
 #define InitF(name, expr) function<double(const double)> name = [=](const double x) -> double { return (expr); }
 
-//Макрос для формирования вектора начальных условий
+//РњР°РєСЂРѕСЃ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РІРµРєС‚РѕСЂР° РЅР°С‡Р°Р»СЊРЅС‹С… СѓСЃР»РѕРІРёР№
 #define InitVector(name, ...) vector<std::function<double(const double)>> name = __VA_ARGS__
 
 
 class Params
 {
 private:
-	//функция, возвращающая тождественный нуль
+	//С„СѓРЅРєС†РёСЏ, РІРѕР·РІСЂР°С‰Р°СЋС‰Р°СЏ С‚РѕР¶РґРµСЃС‚РІРµРЅРЅС‹Р№ РЅСѓР»СЊ
 	std::function<double(const double)> zero;
 
 public:
-	//Базовые параметры
+	//Р‘Р°Р·РѕРІС‹Рµ РїР°СЂР°РјРµС‚СЂС‹
 	BaseParams basic;
 
-	//Указатели на Постановку задачи, ГУ, индикатор, лимитер, интегратор по времени, поток
+	//РЈРєР°Р·Р°С‚РµР»Рё РЅР° РџРѕСЃС‚Р°РЅРѕРІРєСѓ Р·Р°РґР°С‡Рё, Р“РЈ, РёРЅРґРёРєР°С‚РѕСЂ, Р»РёРјРёС‚РµСЂ, РёРЅС‚РµРіСЂР°С‚РѕСЂ РїРѕ РІСЂРµРјРµРЅРё, РїРѕС‚РѕРє
 	Problem   *ptrprb;
 	Boundary  *ptrbnd;
 	Indicator *ptrind;
@@ -78,7 +81,7 @@ public:
 	Timestep  *ptrtst;
 	Flux      *ptrflx;
 
-	//Установка базовых параметров (исключая начальные условия)
+	//РЈСЃС‚Р°РЅРѕРІРєР° Р±Р°Р·РѕРІС‹С… РїР°СЂР°РјРµС‚СЂРѕРІ (РёСЃРєР»СЋС‡Р°СЏ РЅР°С‡Р°Р»СЊРЅС‹Рµ СѓСЃР»РѕРІРёСЏ)
 	void SetBasicParams(double L, double T, int nx, double Co, int deltacnt)
 	{
 		basic.L = L;
@@ -91,21 +94,21 @@ public:
 	}
 
 
-	//Два шаблона для установки типа задачи - без аргументов и с аргументами
+	//Р”РІР° С€Р°Р±Р»РѕРЅР° РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё С‚РёРїР° Р·Р°РґР°С‡Рё - Р±РµР· Р°СЂРіСѓРјРµРЅС‚РѕРІ Рё СЃ Р°СЂРіСѓРјРµРЅС‚Р°РјРё
 	//template <typename T>
 	//void SetProblem() { ptrprb = new T(basic); }
 
 	template <typename T, typename... Arg>
 	void SetProblem(Arg... arg) { ptrprb = new T(basic, arg...); }
 
-	//Два шаблона для установки типа ГУ - без аргументов и с аргументами
+	//Р”РІР° С€Р°Р±Р»РѕРЅР° РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё С‚РёРїР° Р“РЈ - Р±РµР· Р°СЂРіСѓРјРµРЅС‚РѕРІ Рё СЃ Р°СЂРіСѓРјРµРЅС‚Р°РјРё
 	template <typename T>
 	void SetBoundaryCondition() { ptrbnd = new T(basic, *ptrprb); }
 
 	template <typename T, typename... Arg>
 	void SetBoundaryCondition(Arg... arg) { ptrbnd = new T(basic, *ptrprb, arg...); }
 
-	//Два шаблона для установки типа индикатора - без аргументов и с аргументами
+	//Р”РІР° С€Р°Р±Р»РѕРЅР° РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё С‚РёРїР° РёРЅРґРёРєР°С‚РѕСЂР° - Р±РµР· Р°СЂРіСѓРјРµРЅС‚РѕРІ Рё СЃ Р°СЂРіСѓРјРµРЅС‚Р°РјРё
 	template <typename T>
 	void SetIndicator()	{ ptrind = new T(basic, *ptrprb); }
 
@@ -115,21 +118,21 @@ public:
 		ptrind = new T(basic, *ptrprb, arg...);
 	}
 
-	//Два шаблона для установки типа лимитера - без аргументов и с аргументами
+	//Р”РІР° С€Р°Р±Р»РѕРЅР° РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё С‚РёРїР° Р»РёРјРёС‚РµСЂР° - Р±РµР· Р°СЂРіСѓРјРµРЅС‚РѕРІ Рё СЃ Р°СЂРіСѓРјРµРЅС‚Р°РјРё
 	template <typename T>
 	void SetLimiter() { ptrlim = new T(basic, *ptrprb, *ptrind); }
 
 	template <typename T, typename... Arg> 
 	void SetLimiter(Arg... arg) { ptrlim = new T(basic, *ptrprb, *ptrind, arg...); }
 
-	//Два шаблона для установки типа интегратора по времени - без аргументов и с аргументами
+	//Р”РІР° С€Р°Р±Р»РѕРЅР° РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё С‚РёРїР° РёРЅС‚РµРіСЂР°С‚РѕСЂР° РїРѕ РІСЂРµРјРµРЅРё - Р±РµР· Р°СЂРіСѓРјРµРЅС‚РѕРІ Рё СЃ Р°СЂРіСѓРјРµРЅС‚Р°РјРё
 	template <typename T>
 	void SetTimestep() { ptrtst = new T(basic, ptrprb->dim, ptrprb->nshape, *ptrbnd); }
 
 	template <typename T, typename... Arg>
 	void SetTimestep(Arg... arg) { ptrtst = new T(basic, ptrprb->dim, ptrprb->nshape, *ptrbnd, arg...); }
 
-	//Два шаблона для установки типа численного потока - без аргументов и с аргументами
+	//Р”РІР° С€Р°Р±Р»РѕРЅР° РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё С‚РёРїР° С‡РёСЃР»РµРЅРЅРѕРіРѕ РїРѕС‚РѕРєР° - Р±РµР· Р°СЂРіСѓРјРµРЅС‚РѕРІ Рё СЃ Р°СЂРіСѓРјРµРЅС‚Р°РјРё
 	template <typename T>
 	void SetFlux() { ptrflx = new T(basic, *ptrprb); }		
 
@@ -137,11 +140,11 @@ public:
 	void SetFlux(Arg... arg) { ptrflx = new T(basic, *ptrprb, arg...); }
 
 
-	//Конструктор:
-	//problem - идентификатор решаемой задачи
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ:
+	//problem - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂРµС€Р°РµРјРѕР№ Р·Р°РґР°С‡Рё
 	Params(const CaseName SovingCase);
 
-	//Деструктор
+	//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 	~Params()
 	{
 		delete ptrind;

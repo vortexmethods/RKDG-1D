@@ -1,11 +1,11 @@
 #include "BoundaryPeriodic.h"
 
-//Конструктор периодических ГУ
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРµСЂРёРѕРґРёС‡РµСЃРєРёС… Р“РЈ
 BoundaryPeriodic::BoundaryPeriodic(const BaseParams& prm, const Problem& prb) : Boundary(prm, prb)
 {
 }
 
-//Деструктор периодических ГУ
+//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ РїРµСЂРёРѕРґРёС‡РµСЃРєРёС… Р“РЈ
 BoundaryPeriodic::~BoundaryPeriodic()
 {
 }

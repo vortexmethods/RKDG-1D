@@ -1,11 +1,11 @@
 #include "LimiterFinDiff.h"
 
-//КОНСТРУКТОР Лимитера FinDiff
+//РљРћРќРЎРўР РЈРљРўРћР  Р›РёРјРёС‚РµСЂР° FinDiff
 LimiterFinDiff::LimiterFinDiff(const BaseParams& prm, const Problem& prb,\
     const Indicator& ind) : Limiter(prm, prb, ind)
 {};
 
-//ДЕСТРУКТОР Лимитера
+//Р”Р•РЎРўР РЈРљРўРћР  Р›РёРјРёС‚РµСЂР°
 LimiterFinDiff::~LimiterFinDiff()
 {};
 

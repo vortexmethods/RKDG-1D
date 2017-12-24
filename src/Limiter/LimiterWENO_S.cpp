@@ -2,42 +2,42 @@
 #include "Integrator.h"
 
 
-//КОНСТРУКТОР Лимитера WENO_S
+//РљРћРќРЎРўР РЈРљРўРћР  Р›РёРјРёС‚РµСЂР° WENO_S
 LimiterWENO_S::LimiterWENO_S(const BaseParams& prm, const Problem& prb, \
     const Indicator& ind, double degree) : Limiter(prm, prb, ind)
 {
 	wg = degree;
 }
 
-//ДЕСТРУКТОР Лимитера
+//Р”Р•РЎРўР РЈРљРўРћР  Р›РёРјРёС‚РµСЂР°
 LimiterWENO_S::~LimiterWENO_S()
 {}
 
 
 void LimiterWENO_S::CalculateBound(const vector<vector<vector<double>>>& SOL, const int cell)
 {
-	// Некоторые базовые параметры.
+	// РќРµРєРѕС‚РѕСЂС‹Рµ Р±Р°Р·РѕРІС‹Рµ РїР°СЂР°РјРµС‚СЂС‹.
 	int nx = ptrprm->nx;
 	double h = ptrprm->h;
 	int dim = ptrprb->dim;
 	int nshape = ptrprb->nshape;
 
-	//Определяем соседей проблемной ячейки. При необходимости, посредством фиктивных ячеек.
+	//РћРїСЂРµРґРµР»СЏРµРј СЃРѕСЃРµРґРµР№ РїСЂРѕР±Р»РµРјРЅРѕР№ СЏС‡РµР№РєРё. РџСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё, РїРѕСЃСЂРµРґСЃС‚РІРѕРј С„РёРєС‚РёРІРЅС‹С… СЏС‡РµРµРє.
 	const vector<vector<double>>& leftSol = (cell > 0) ? SOL[cell - 1] : SOL[nx];
 	const vector<vector<double>>& troublSol = SOL[cell];
 	const vector<vector<double>>& rightSol = (cell < nx - 1) ? SOL[cell + 1] : SOL[nx + 1];
 
-	// Линейные веса.
+	// Р›РёРЅРµР№РЅС‹Рµ РІРµСЃР°.
 	double ak = 0.001;
 	double gamma0 = ak;
 	double gamma1 = 1.0 - 2.0*ak;
 	double gamma2 = ak;
 
 	if (nshape==3) 
-	// Цикл по консервативным переменным 
+	// Р¦РёРєР» РїРѕ РєРѕРЅСЃРµСЂРІР°С‚РёРІРЅС‹Рј РїРµСЂРµРјРµРЅРЅС‹Рј 
 	for (int val = 0; val < dim; ++val)
 	{
-		// Переобозначение моментов решения с ячеек шаблона.
+		// РџРµСЂРµРѕР±РѕР·РЅР°С‡РµРЅРёРµ РјРѕРјРµРЅС‚РѕРІ СЂРµС€РµРЅРёСЏ СЃ СЏС‡РµРµРє С€Р°Р±Р»РѕРЅР°.
 		//const double& ul = leftSol[0][val];
 		//const double& u = troublSol[0][val];
 		//const double& ur = rightSol[0][val];
@@ -48,24 +48,24 @@ void LimiterWENO_S::CalculateBound(const vector<vector<vector<double>>>& SOL, co
 		const double& w = troublSol[2][val];
 		const double& wr = rightSol[2][val];
 
-		// Вычисляем индикаторы гладкости полиномов решения в проблемной ячейке. 
+		// Р’С‹С‡РёСЃР»СЏРµРј РёРЅРґРёРєР°С‚РѕСЂС‹ РіР»Р°РґРєРѕСЃС‚Рё РїРѕР»РёРЅРѕРјРѕРІ СЂРµС€РµРЅРёСЏ РІ РїСЂРѕР±Р»РµРјРЅРѕР№ СЏС‡РµР№РєРµ. 
 		double beta0 = 4.0 * ((vl + 6.0 * wl)*(vl + 6.0 * wl) + 39.0 * wl*wl);
 		double beta1 = 4.0 * (v*v + 39.0 * w*w);
 		double beta2 = 4.0 * ((vr - 6.0 * wr)*(vr - 6.0 * wr) + 39.0 * wr*wr);
 
-		// Вычисляем нелинейные веса. Нормировка будет осуществлена ниже.
+		// Р’С‹С‡РёСЃР»СЏРµРј РЅРµР»РёРЅРµР№РЅС‹Рµ РІРµСЃР°. РќРѕСЂРјРёСЂРѕРІРєР° Р±СѓРґРµС‚ РѕСЃСѓС‰РµСЃС‚РІР»РµРЅР° РЅРёР¶Рµ.
 		double w0 = gamma0 / pow(weps + beta0, wg);
 		double w1 = gamma1 / pow(weps + beta1, wg);
 		double w2 = gamma2 / pow(weps + beta2, wg);
-		// Нормировка весов.
+		// РќРѕСЂРјРёСЂРѕРІРєР° РІРµСЃРѕРІ.
 		double WWW = (w0 + w1 + w2);
 		w0 = w0 / WWW; w1 = w1 / WWW; w2 = w2 / WWW;
 		
-		//// Эксперимент против логики: пробуем игнорировать привязку базисных функций к ячейкам. 
+		//// Р­РєСЃРїРµСЂРёРјРµРЅС‚ РїСЂРѕС‚РёРІ Р»РѕРіРёРєРё: РїСЂРѕР±СѓРµРј РёРіРЅРѕСЂРёСЂРѕРІР°С‚СЊ РїСЂРёРІСЏР·РєСѓ Р±Р°Р·РёСЃРЅС‹С… С„СѓРЅРєС†РёР№ Рє СЏС‡РµР№РєР°Рј. 
 		//for (int shape = 1; shape < ptrprb->nshape; shape++)
 		//	SOLcorr[cell][shape][val] = (w0*leftSol[shape][val] + w1*troublSol[shape][val] + w2*rightSol[shape][val]) / (w0 + w1 + w2);
 
-		// Честно сделанный пересчёт моментов с учётом привязки базисных функций к ячейкам. 
+		// Р§РµСЃС‚РЅРѕ СЃРґРµР»Р°РЅРЅС‹Р№ РїРµСЂРµСЃС‡С‘С‚ РјРѕРјРµРЅС‚РѕРІ СЃ СѓС‡С‘С‚РѕРј РїСЂРёРІСЏР·РєРё Р±Р°Р·РёСЃРЅС‹С… С„СѓРЅРєС†РёР№ Рє СЏС‡РµР№РєР°Рј. 
 		double t1, t2, t3,t4;
 		
 		t1 = w0*leftSol[2][val];

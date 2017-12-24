@@ -10,8 +10,8 @@ Problem::Problem(const BaseParams& prm, int dimension, int nshapefunctions, vect
 
 	int nx = ptrprm->nx;
 
-	//Выделяем память под все необходимые переменные
-	FLUX.resize(nx + 2); LFLUX.resize(nx + 2); RFLUX.resize(nx + 2); // +2 - для фиктивных ячеек
+	//Р’С‹РґРµР»СЏРµРј РїР°РјСЏС‚СЊ РїРѕРґ РІСЃРµ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ
+	FLUX.resize(nx + 2); LFLUX.resize(nx + 2); RFLUX.resize(nx + 2); // +2 - РґР»СЏ С„РёРєС‚РёРІРЅС‹С… СЏС‡РµРµРє
 
 	for (int cell = 0; cell < (nx + 2); ++cell)
 	{
@@ -38,7 +38,7 @@ Problem::~Problem()
 
 
 
-//Запонение вектора потоков для всех ячеек
+//Р—Р°РїРѕРЅРµРЅРёРµ РІРµРєС‚РѕСЂР° РїРѕС‚РѕРєРѕРІ РґР»СЏ РІСЃРµС… СЏС‡РµРµРє
 /*
 void Problem::convFlux(const vector<vector<double>>& UU)
 {

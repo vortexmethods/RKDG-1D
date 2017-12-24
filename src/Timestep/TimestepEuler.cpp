@@ -9,7 +9,7 @@ TimestepEuler::~TimestepEuler()
 {
 }
 
-//Шаг расчета методом Эйлера
+//РЁР°Рі СЂР°СЃС‡РµС‚Р° РјРµС‚РѕРґРѕРј Р­Р№Р»РµСЂР°
 void TimestepEuler::runstep(const vector<vector<vector<double>>>& SOL, \
 	vector<vector<vector<double>>>& SOLnew, \
 	const double tau, Flux& method, Limiter& lim)

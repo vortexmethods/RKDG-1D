@@ -2,14 +2,14 @@
 #include "Integrator.h"
 
 
-//КОНСТРУКТОР Лимитера WENO
+//РљРћРќРЎРўР РЈРљРўРћР  Р›РёРјРёС‚РµСЂР° WENO
 LimiterWENO::LimiterWENO(const BaseParams& prm, const Problem& prb,\
     const Indicator& ind, double degree) : Limiter(prm, prb, ind)
 {
     wg = degree;
 }
 
-//ДЕСТРУКТОР Лимитера
+//Р”Р•РЎРўР РЈРљРўРћР  Р›РёРјРёС‚РµСЂР°
 LimiterWENO::~LimiterWENO()
 {}
 
